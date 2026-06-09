@@ -1,17 +1,29 @@
+<script setup lang="ts">
+import { ArrowLeft } from "lucide-vue-next";
+
+import Header from "@/components/site/Header.vue";
+</script>
+
 <template>
-  <div class="flex min-h-[70vh] items-center justify-center bg-background px-4">
-    <div class="max-w-md text-center">
-      <h1 class="text-7xl font-bold text-foreground">404</h1>
-      <h2 class="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-      <p class="mt-2 text-sm text-muted-foreground">
-        The page you're looking for doesn't exist or has been moved.
-      </p>
-      <RouterLink
-        to="/"
-        class="mt-6 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-      >
-        Go home
-      </RouterLink>
-    </div>
+  <div class="min-h-screen bg-background">
+    <Header />
+
+    <section class="container-page flex min-h-screen items-center justify-center py-24 text-center">
+      <div class="max-w-xl">
+        <p class="text-xs font-bold uppercase text-brand">404</p>
+        <h1 class="mt-4 text-4xl font-extrabold text-display md:text-6xl">Page not found</h1>
+        <p class="mt-5 leading-8 text-muted">
+          This page does not exist, but the portfolio case studies and contact details are available
+          from the homepage.
+        </p>
+        <RouterLink
+          to="/"
+          class="mt-8 inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-extrabold text-[#071014]"
+        >
+          <ArrowLeft class="h-4 w-4" />
+          Back home
+        </RouterLink>
+      </div>
+    </section>
   </div>
 </template>

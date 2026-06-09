@@ -1,38 +1,52 @@
 <script setup lang="ts">
-import { Briefcase, GitBranch } from "@lucide/vue";
+import { Github, Linkedin, Mail } from "lucide-vue-next";
+
+import { portfolioData } from "@/data/portfolio";
 
 const year = new Date().getFullYear();
-
-const socials = [
-  { href: "https://github.com/pengseyha", label: "GitHub", icon: GitBranch },
-  {
-    href: "https://www.linkedin.com/in/peng-seyha-725ba7298/",
-    label: "LinkedIn",
-    icon: Briefcase,
-  },
-];
 </script>
 
 <template>
-  <footer class="border-t border-border bg-background">
-    <div class="page-shell flex flex-col gap-4 py-8 sm:flex-row sm:items-center sm:justify-between">
+  <footer class="border-t border-border/70 bg-background py-10">
+    <div class="container-page flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
       <div>
-        <p class="text-sm font-semibold text-foreground">Peng Seyha</p>
-        <p class="mt-1 text-sm text-muted-foreground">Phnom Penh, Cambodia · &copy; {{ year }}</p>
+        <p class="text-sm font-semibold text-display">{{ portfolioData.identity.name }}</p>
+        <p class="mt-1 max-w-xl text-sm text-muted">
+          Cybersecurity student focused on SOC operations, security labs, and secure systems.
+        </p>
       </div>
-      <div class="flex gap-2">
+
+      <div class="flex flex-wrap items-center gap-3 text-sm text-muted">
         <a
-          v-for="item in socials"
-          :key="item.label"
-          :href="item.href"
-          :target="item.href.startsWith('http') ? '_blank' : undefined"
-          rel="noreferrer"
-          :aria-label="item.label"
-          class="grid h-9 w-9 place-items-center rounded-md border border-border bg-card text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
+          :href="portfolioData.contact.githubUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="quiet-link inline-flex items-center gap-2"
         >
-          <component :is="item.icon" class="h-4 w-4" />
+          <Github class="h-4 w-4" />
+          GitHub
+        </a>
+        <a
+          :href="portfolioData.contact.linkedinUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="quiet-link inline-flex items-center gap-2"
+        >
+          <Linkedin class="h-4 w-4" />
+          LinkedIn
+        </a>
+        <a
+          :href="`mailto:${portfolioData.contact.email}`"
+          class="quiet-link inline-flex items-center gap-2"
+        >
+          <Mail class="h-4 w-4" />
+          Email
         </a>
       </div>
+    </div>
+
+    <div class="container-page mt-8 border-t border-border/60 pt-6 text-xs text-muted">
+      © {{ year }} {{ portfolioData.identity.name }}. Built as a focused cybersecurity portfolio.
     </div>
   </footer>
 </template>

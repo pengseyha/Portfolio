@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import { ArrowUpRight } from "@lucide/vue";
+import { computed } from "vue";
+import { Github, Linkedin, Mail, Phone } from "lucide-vue-next";
 
-import type { Contact } from "@/data/portfolio";
-
-defineProps<{
-  contact: Contact;
+const props = defineProps<{
+  icon: "Github" | "Linkedin" | "Mail" | "Phone";
+  label: string;
+  url: string;
 }>();
+
+const iconComponent = computed(() => {
+  const icons = {
+    Github,
+    Linkedin,
+    Mail,
+    Phone,
+  };
+
+  return icons[props.icon];
+});
 </script>
 
 <template>
   <a
-    :href="contact.href"
-    :target="contact.href.startsWith('http') ? '_blank' : undefined"
-    rel="noreferrer"
-    class="panel group flex items-center justify-between gap-4 p-4"
+    :href="url"
+    :target="url.startsWith('http') ? '_blank' : undefined"
+    :rel="url.startsWith('http') ? 'noopener noreferrer' : undefined"
+    class="surface-panel inline-flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-display transition duration-300 hover:-translate-y-0.5 hover:border-brand/45"
   >
-    <span class="flex min-w-0 items-center gap-3">
-      <span class="icon-box">
-        <component :is="contact.icon" class="h-5 w-5" />
-      </span>
-      <span class="min-w-0">
-        <span class="eyebrow block text-[10px]">{{ contact.label }}</span>
-        <span class="mt-1 block truncate text-sm font-semibold text-foreground">{{
-          contact.value
-        }}</span>
-      </span>
-    </span>
-    <ArrowUpRight
-      class="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-    />
+    <component :is="iconComponent" class="h-4 w-4 text-brand" />
+    <span>{{ label }}</span>
   </a>
 </template>

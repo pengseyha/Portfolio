@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import HomeView from "@/views/HomeView.vue";
+import ProjectCaseStudyView from "@/views/ProjectCaseStudyView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -9,6 +10,11 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+    },
+    {
+      path: "/projects/:id",
+      name: "project-case-study",
+      component: ProjectCaseStudyView,
     },
     {
       path: "/:pathMatch(.*)*",
