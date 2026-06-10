@@ -10,16 +10,13 @@ import Header from "@/components/site/Header.vue";
 
     <section class="container-page flex min-h-screen items-center justify-center py-24 text-center">
       <div class="max-w-xl">
-        <p class="text-xs font-bold uppercase text-brand">404</p>
-        <h1 class="mt-4 text-4xl font-extrabold text-display md:text-6xl">Page not found</h1>
+        <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">404</p>
+        <h1 class="mt-4 text-4xl font-black text-display md:text-6xl">Page not found</h1>
         <p class="mt-5 leading-8 text-muted">
           This page does not exist, but the portfolio case studies and contact details are available
           from the homepage.
         </p>
-        <RouterLink
-          to="/"
-          class="mt-8 inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-extrabold text-[#071014]"
-        >
+        <RouterLink to="/" class="button-primary mt-8">
           <ArrowLeft class="h-4 w-4" />
           Back home
         </RouterLink>

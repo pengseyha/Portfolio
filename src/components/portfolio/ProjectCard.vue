@@ -11,52 +11,45 @@ defineProps<{
 
 <template>
   <article
-    class="group surface-panel flex h-full flex-col overflow-hidden rounded-2xl transition duration-300 hover:-translate-y-1 hover:border-brand/45"
+    class="premium-card group surface-panel flex h-full flex-col overflow-hidden rounded-[24px]"
   >
     <RouterLink
       :to="`/projects/${project.id}`"
-      class="block overflow-hidden"
+      class="image-sheen block overflow-hidden"
       :aria-label="`Open ${project.title}`"
     >
       <img
         :src="project.image"
         :alt="`${project.title} preview`"
         loading="lazy"
-        class="aspect-[16/10] w-full object-cover opacity-82 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100"
+        class="aspect-[16/10] w-full object-cover opacity-90 transition duration-500 group-hover:scale-[1.04] group-hover:opacity-100"
       />
     </RouterLink>
 
-    <div class="flex flex-1 flex-col p-5 md:p-6">
+    <div class="flex flex-1 flex-col p-5">
       <div class="mb-4 flex items-start justify-between gap-3">
         <div>
-          <p class="text-xs font-bold uppercase text-brand">{{ project.eyebrow }}</p>
-          <h3 class="mt-2 text-xl font-extrabold text-display">{{ project.title }}</h3>
+          <p class="text-xs font-black uppercase tracking-[0.14em] text-brand">
+            {{ project.eyebrow }}
+          </p>
+          <h3 class="mt-2 text-xl font-black text-display transition-colors group-hover:text-brand">
+            {{ project.title }}
+          </h3>
         </div>
         <span
-          class="rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-muted"
+          class="rounded-full border border-border bg-background/45 px-3 py-1 text-xs font-bold text-muted"
         >
           {{ project.year }}
         </span>
       </div>
 
-      <p class="text-sm leading-7 text-muted">{{ project.summary }}</p>
-
-      <div class="mt-5 grid grid-cols-3 gap-2">
-        <div
-          v-for="metric in project.metrics"
-          :key="metric.label"
-          class="rounded-xl border border-border/70 bg-background/45 p-3"
-        >
-          <p class="text-[11px] font-semibold uppercase text-muted">{{ metric.label }}</p>
-          <p class="mt-1 text-sm font-bold text-display">{{ metric.value }}</p>
-        </div>
-      </div>
+      <p class="line-clamp-2 text-sm leading-7 text-muted">{{ project.summary }}</p>
 
       <div class="mt-5 flex flex-wrap gap-2">
         <span
-          v-for="tech in project.stack.slice(0, featured ? 5 : 4)"
+          v-for="tech in project.stack.slice(0, featured ? 5 : 3)"
           :key="tech"
-          class="rounded-full border border-border/70 bg-surface px-3 py-1 text-xs font-semibold text-body"
+          class="rounded-full border border-border bg-background/45 px-3 py-1 text-xs font-bold text-body transition duration-300 hover:border-brand/40 hover:text-display"
         >
           {{ tech }}
         </span>
@@ -64,7 +57,7 @@ defineProps<{
 
       <RouterLink
         :to="`/projects/${project.id}`"
-        class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-brand transition hover:gap-3"
+        class="mt-6 inline-flex items-center gap-2 text-sm font-black text-brand transition-all duration-300 hover:gap-3"
       >
         View case study
         <ArrowUpRight class="h-4 w-4" />

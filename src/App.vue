@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
 
 import Footer from "@/components/site/Footer.vue";
+
+const route = useRoute();
 </script>
 
 <template>
   <div class="min-h-screen bg-background text-body">
     <a href="#main-content" class="skip-link">Skip to content</a>
     <main id="main-content" class="min-h-screen" tabindex="-1">
-      <RouterView />
+      <RouterView v-slot="{ Component }">
+        <Transition name="page" mode="out-in">
+          <component :is="Component" :key="route.fullPath" />
+        </Transition>
+      </RouterView>
     </main>
     <Footer />
   </div>

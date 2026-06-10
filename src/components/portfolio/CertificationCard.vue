@@ -9,9 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <article
-    class="surface-panel flex h-full gap-4 rounded-2xl p-5 transition duration-300 hover:border-brand/40"
-  >
+  <article class="premium-card group surface-panel flex h-full gap-4 rounded-[24px] p-5">
     <div
       class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-brand"
     >
@@ -20,9 +18,11 @@ defineProps<{
 
     <div>
       <div class="flex flex-wrap items-center gap-2">
-        <h3 class="font-bold text-display">{{ certification.title }}</h3>
+        <h3 class="font-black text-display transition-colors group-hover:text-brand">
+          {{ certification.title }}
+        </h3>
         <span
-          class="rounded-full border border-border px-2 py-0.5 text-[11px] font-semibold text-muted"
+          class="rounded-full border border-border bg-background/45 px-2 py-0.5 text-[11px] font-bold text-muted"
         >
           {{ certification.year }}
         </span>

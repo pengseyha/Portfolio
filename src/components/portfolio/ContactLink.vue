@@ -25,7 +25,7 @@ const iconComponent = computed(() => {
     :href="url"
     :target="url.startsWith('http') ? '_blank' : undefined"
     :rel="url.startsWith('http') ? 'noopener noreferrer' : undefined"
-    class="surface-panel inline-flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-display transition duration-300 hover:-translate-y-0.5 hover:border-brand/45"
+    class="premium-card surface-panel inline-flex items-center gap-3 rounded-[20px] px-4 py-3 text-sm font-bold text-display"
   >
     <component :is="iconComponent" class="h-4 w-4 text-brand" />
     <span>{{ label }}</span>

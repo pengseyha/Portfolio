@@ -72,14 +72,14 @@ export interface GithubActivity {
 export const portfolioData = {
   identity: {
     name: "Peng Seyha",
-    role: "Cybersecurity student focused on SOC operations and secure systems",
-    headline: "SOC analyst mindset. Secure systems builder.",
+    role: "Cybersecurity Student | SOC Analyst Aspirant",
+    headline: "Building practical SOC workflows and secure systems.",
     subheading:
-      "Year 4 Computer Science student at ITC building SOC labs, detection workflows, and practical security tools.",
+      "Year 4 Computer Science student focused on monitoring, investigation, network defense, and security tooling.",
     location: "Phnom Penh, Cambodia",
     availability: "Open to Cybersecurity, SOC Analyst, and IT Security internships",
     summary:
-      "I connect security fundamentals with clean engineering: logs, detection logic, network defense, APIs, and clear documentation.",
+      "I connect SOC fundamentals with clean engineering: logs, detection logic, APIs, and documentation.",
   },
   contact: {
     email: "pengseyha2005@gmail.com",
@@ -103,10 +103,9 @@ export const portfolioData = {
   ],
   skills: [
     {
-      title: "Security Operations",
-      description: "Alert triage, log review, MITRE mapping, and incident notes.",
+      title: "Security",
+      description: "SOC thinking, detection workflows, and incident documentation.",
       skills: [
-        "Splunk SIEM",
         "Log Analysis",
         "MITRE ATT&CK",
         "Threat Hunting",
@@ -115,14 +114,24 @@ export const portfolioData = {
       ],
     },
     {
-      title: "Network & Systems",
-      description: "Network labs, packet analysis, Linux, and defensive controls.",
-      skills: ["pfSense", "Snort", "Wireshark", "Nmap", "Linux", "Cisco Packet Tracer"],
+      title: "Networking",
+      description: "Network fundamentals, segmentation, and traffic investigation.",
+      skills: ["TCP/IP", "Subnetting", "VLANs", "Routing", "Packet Analysis"],
     },
     {
-      title: "Secure Development",
-      description: "Clean interfaces, APIs, validation, and database-backed systems.",
-      skills: ["Vue.js", "TypeScript", "Tailwind CSS", "NestJS", "Laravel", "PostgreSQL"],
+      title: "Tools",
+      description: "Security tools used across labs and case studies.",
+      skills: ["Splunk SIEM", "Snort", "pfSense", "Wireshark", "Nmap", "Cisco Packet Tracer"],
+    },
+    {
+      title: "Operating Systems",
+      description: "Linux environments for security practice and lab work.",
+      skills: ["Kali Linux", "Ubuntu", "Linux Administration", "Shell"],
+    },
+    {
+      title: "Soft Skills",
+      description: "Clear communication and structured problem solving.",
+      skills: ["Analytical Thinking", "Problem-Solving", "Documentation", "Teamwork"],
     },
   ] as SkillCategory[],
   projects: [
@@ -133,8 +142,7 @@ export const portfolioData = {
       year: "2026",
       type: "Featured",
       tags: ["SOC", "Cyber", "Backend"],
-      summary:
-        "A SOC monitoring and incident management platform designed to turn raw alerts into structured analyst work.",
+      summary: "A SOC platform that turns raw alerts into structured analyst work.",
       role: "Product design, backend architecture, detection workflow, and technical documentation",
       image: mitreAttackImage,
       stack: ["NestJS", "PostgreSQL", "Linux", "MITRE ATT&CK"],
@@ -179,8 +187,7 @@ export const portfolioData = {
       year: "2026",
       type: "Lab",
       tags: ["SOC", "Splunk", "Research"],
-      summary:
-        "A Splunk-based lab for practicing log search, alert investigation, and analyst documentation.",
+      summary: "A Splunk lab for search, triage, and investigation notes.",
       role: "Lab design, query writing, investigation workflow, and report notes",
       image: splunkSiemImage,
       stack: ["Splunk", "Linux", "MITRE ATT&CK"],
@@ -221,8 +228,7 @@ export const portfolioData = {
       year: "2025",
       type: "Lab",
       tags: ["Network", "Cyber"],
-      summary:
-        "A segmented network design lab covering VLANs, DHCP, routing, and firewall-minded topology decisions.",
+      summary: "A segmented network lab for VLANs, routing, and firewall decisions.",
       role: "Network design, segmentation planning, and topology documentation",
       image: pfsenseNetworkImage,
       stack: ["Cisco Packet Tracer", "pfSense", "VLAN"],
@@ -295,8 +301,7 @@ export const portfolioData = {
       year: "2024",
       type: "Build",
       tags: ["Web", "Backend"],
-      summary:
-        "REST API backends with validation, database design, and maintainable service structure.",
+      summary: "REST APIs with validation, database design, and clean service structure.",
       role: "API design, database schema planning, and implementation",
       image: laravelNestjsImage,
       stack: ["Laravel", "NestJS", "PostgreSQL"],

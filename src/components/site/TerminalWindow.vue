@@ -1,77 +1,88 @@
 <script setup lang="ts">
 import { Activity, FileSearch, ShieldCheck } from "lucide-vue-next";
 
-import { featuredProject } from "@/data/portfolio";
+const metrics = [
+  { label: "Open alerts", value: "12" },
+  { label: "IOC matches", value: "34" },
+  { label: "Mapped tactics", value: "7" },
+];
+
+const alerts = [
+  { name: "Suspicious login pattern", level: "High", status: "Investigating" },
+  { name: "Port scan activity", level: "Medium", status: "Mapped" },
+  { name: "Repeated auth failure", level: "Medium", status: "Queued" },
+];
 
 const workflow = [
-  {
-    label: "Collect",
-    detail: "Alerts and logs",
-    icon: Activity,
-  },
-  {
-    label: "Investigate",
-    detail: "Severity and context",
-    icon: FileSearch,
-  },
-  {
-    label: "Document",
-    detail: "Notes and next action",
-    icon: ShieldCheck,
-  },
+  { label: "Collect", icon: Activity },
+  { label: "Triage", icon: FileSearch },
+  { label: "Report", icon: ShieldCheck },
 ];
 </script>
 
 <template>
-  <aside class="surface-panel overflow-hidden rounded-3xl">
-    <div class="border-b border-border/70 p-5">
+  <aside class="surface-panel blue-ring animate-orbit-soft overflow-hidden rounded-[28px]">
+    <div class="border-b border-border p-5">
       <div class="flex items-center justify-between gap-4">
         <div>
-          <p class="text-xs font-bold uppercase text-brand">Featured system</p>
-          <h2 class="mt-2 text-2xl font-extrabold text-display">{{ featuredProject.title }}</h2>
+          <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">SOC Platform</p>
+          <h2 class="mt-2 text-2xl font-black text-display">Cyber Shield Checker</h2>
         </div>
-        <span
-          class="rounded-full border border-brand/35 bg-brand-soft px-3 py-1 text-xs font-bold text-brand"
-        >
-          {{ featuredProject.type }}
-        </span>
+        <span class="badge">Active build</span>
       </div>
-      <p class="mt-4 text-sm leading-7 text-muted">
-        A focused SOC workflow for alerts, IOCs, MITRE mapping, and incident notes.
-      </p>
     </div>
 
-    <div class="p-5">
-      <div class="grid gap-3">
-        <div
-          v-for="item in workflow"
-          :key="item.label"
-          class="flex gap-4 rounded-2xl border border-border/70 bg-background/40 p-4"
-        >
+    <div class="grid gap-3 p-4 sm:grid-cols-3">
+      <div
+        v-for="metric in metrics"
+        :key="metric.label"
+        class="rounded-2xl border border-border bg-background/45 p-4"
+      >
+        <p class="text-[11px] font-black uppercase tracking-[0.12em] text-muted">
+          {{ metric.label }}
+        </p>
+        <p class="mt-2 text-2xl font-black text-display">{{ metric.value }}</p>
+      </div>
+    </div>
+
+    <div class="px-4 pb-4">
+      <div class="rounded-2xl border border-border bg-background/45 p-3">
+        <div class="mb-3 flex items-center justify-between">
+          <p class="text-xs font-black uppercase tracking-[0.16em] text-muted">Alert Queue</p>
+          <span class="text-xs font-bold text-brand">MITRE mapped</span>
+        </div>
+
+        <div class="space-y-2">
           <div
-            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand"
+            v-for="alert in alerts"
+            :key="alert.name"
+            class="grid grid-cols-[1fr_auto] gap-3 rounded-xl border border-border bg-surface/70 p-3"
           >
-            <component :is="item.icon" class="h-5 w-5" />
-          </div>
-          <div>
-            <p class="font-bold text-display">{{ item.label }}</p>
-            <p class="mt-1 text-sm text-muted">{{ item.detail }}</p>
+            <div>
+              <p class="text-sm font-bold text-display">{{ alert.name }}</p>
+              <p class="mt-1 text-xs text-muted">{{ alert.status }}</p>
+            </div>
+            <span
+              class="self-start rounded-full border border-border px-2 py-1 text-[11px] font-black"
+              :class="alert.level === 'High' ? 'text-brand' : 'text-muted'"
+            >
+              {{ alert.level }}
+            </span>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="mt-5 rounded-2xl border border-border/70 bg-surface p-4">
-        <p class="text-xs font-bold uppercase text-muted">System flow</p>
-        <div class="mt-4 grid gap-3 text-sm text-body">
-          <div
-            v-for="step in featuredProject.architecture.slice(0, 3)"
-            :key="step"
-            class="flex items-start gap-3"
-          >
-            <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand"></span>
-            <span>{{ step }}</span>
-          </div>
+    <div class="grid gap-3 border-t border-border p-4 sm:grid-cols-3">
+      <div
+        v-for="step in workflow"
+        :key="step.label"
+        class="flex items-center gap-3 rounded-2xl border border-border bg-background/35 p-3"
+      >
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-soft text-brand">
+          <component :is="step.icon" class="h-4 w-4" />
         </div>
+        <p class="text-sm font-black text-display">{{ step.label }}</p>
       </div>
     </div>
   </aside>

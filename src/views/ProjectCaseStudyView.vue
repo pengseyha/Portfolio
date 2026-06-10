@@ -4,6 +4,7 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 
 import Header from "@/components/site/Header.vue";
+import RevealOnScroll from "@/components/site/RevealOnScroll.vue";
 import { getProjectById } from "@/data/portfolio";
 
 const route = useRoute();
@@ -24,7 +25,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
           Back to projects
         </RouterLink>
 
-        <div class="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <RevealOnScroll class="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
             <p class="text-xs font-bold uppercase text-brand">{{ project.eyebrow }}</p>
             <h1 class="mt-4 text-4xl font-extrabold text-display md:text-6xl">
@@ -38,59 +39,60 @@ const project = computed(() => getProjectById(String(route.params.id)));
                 :href="project.githubUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-extrabold text-[#071014] transition hover:-translate-y-0.5"
+                class="button-primary"
               >
                 <Github class="h-4 w-4" />
                 View repository
               </a>
-              <a
-                v-if="project.reportUrl"
-                :href="project.reportUrl"
-                class="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-5 py-3 text-sm font-bold text-display transition hover:-translate-y-0.5 hover:border-brand/45"
-              >
+              <a v-if="project.reportUrl" :href="project.reportUrl" class="button-secondary">
                 Read report
                 <ArrowUpRight class="h-4 w-4" />
               </a>
             </div>
           </div>
 
-          <div class="surface-panel overflow-hidden rounded-3xl">
+          <div class="image-sheen premium-card surface-panel overflow-hidden rounded-[28px]">
             <img
               :src="project.image"
               :alt="`${project.title} case study preview`"
               class="aspect-[16/11] w-full object-cover"
             />
           </div>
-        </div>
+        </RevealOnScroll>
 
         <div class="mt-10 grid gap-4 md:grid-cols-3">
-          <div
-            v-for="metric in project.metrics"
+          <RevealOnScroll
+            v-for="(metric, index) in project.metrics"
             :key="metric.label"
-            class="rounded-3xl border border-border/70 bg-surface/70 p-5"
+            :delay="index * 70"
+            class="premium-card rounded-[24px] border border-border bg-surface/70 p-5"
           >
             <p class="text-xs font-bold uppercase text-muted">{{ metric.label }}</p>
             <p class="mt-2 text-2xl font-extrabold text-display">{{ metric.value }}</p>
-          </div>
+          </RevealOnScroll>
         </div>
 
         <div class="mt-12 grid gap-6 lg:grid-cols-2">
-          <article class="surface-panel rounded-3xl p-6 md:p-8">
-            <p class="text-xs font-bold uppercase text-brand">Challenge</p>
-            <h2 class="mt-3 text-2xl font-extrabold text-display">What needed to be solved</h2>
+          <RevealOnScroll as="article" class="premium-card surface-panel rounded-[28px] p-6 md:p-8">
+            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Challenge</p>
+            <h2 class="mt-3 text-2xl font-black text-display">What needed to be solved</h2>
             <p class="mt-5 leading-8 text-muted">{{ project.challenge }}</p>
-          </article>
+          </RevealOnScroll>
 
-          <article class="surface-panel rounded-3xl p-6 md:p-8">
-            <p class="text-xs font-bold uppercase text-brand">Solution</p>
-            <h2 class="mt-3 text-2xl font-extrabold text-display">How I approached it</h2>
+          <RevealOnScroll
+            as="article"
+            class="premium-card surface-panel rounded-[28px] p-6 md:p-8"
+            :delay="90"
+          >
+            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Solution</p>
+            <h2 class="mt-3 text-2xl font-black text-display">How I approached it</h2>
             <p class="mt-5 leading-8 text-muted">{{ project.solution }}</p>
-          </article>
+          </RevealOnScroll>
         </div>
 
         <section class="mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <div class="surface-panel rounded-3xl p-6 md:p-8">
-            <p class="text-xs font-bold uppercase text-brand">Technologies</p>
+          <RevealOnScroll class="premium-card surface-panel rounded-[28px] p-6 md:p-8">
+            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Technologies</p>
             <div class="mt-5 flex flex-wrap gap-2">
               <span
                 v-for="tech in project.stack"
@@ -103,11 +105,11 @@ const project = computed(() => getProjectById(String(route.params.id)));
 
             <p class="mt-8 text-xs font-bold uppercase text-brand">Role</p>
             <p class="mt-3 leading-7 text-muted">{{ project.role }}</p>
-          </div>
+          </RevealOnScroll>
 
-          <div class="surface-panel rounded-3xl p-6 md:p-8">
-            <p class="text-xs font-bold uppercase text-brand">Architecture</p>
-            <h2 class="mt-3 text-2xl font-extrabold text-display">System flow</h2>
+          <RevealOnScroll class="premium-card surface-panel rounded-[28px] p-6 md:p-8" :delay="90">
+            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Architecture</p>
+            <h2 class="mt-3 text-2xl font-black text-display">System flow</h2>
 
             <div class="mt-6 grid gap-4">
               <div v-for="(step, index) in project.architecture" :key="step" class="flex gap-4">
@@ -119,12 +121,12 @@ const project = computed(() => getProjectById(String(route.params.id)));
                 <p class="pt-1 text-sm leading-7 text-muted">{{ step }}</p>
               </div>
             </div>
-          </div>
+          </RevealOnScroll>
         </section>
 
         <section class="mt-12 grid gap-6 lg:grid-cols-3">
-          <article class="surface-panel rounded-3xl p-6">
-            <p class="text-xs font-bold uppercase text-brand">Features</p>
+          <RevealOnScroll as="article" class="premium-card surface-panel rounded-[28px] p-6">
+            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Features</p>
             <ul class="mt-5 space-y-3">
               <li
                 v-for="feature in project.features"
@@ -135,10 +137,14 @@ const project = computed(() => getProjectById(String(route.params.id)));
                 {{ feature }}
               </li>
             </ul>
-          </article>
+          </RevealOnScroll>
 
-          <article class="surface-panel rounded-3xl p-6">
-            <p class="text-xs font-bold uppercase text-brand">Lessons Learned</p>
+          <RevealOnScroll
+            as="article"
+            class="premium-card surface-panel rounded-[28px] p-6"
+            :delay="80"
+          >
+            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Lessons Learned</p>
             <ul class="mt-5 space-y-3">
               <li
                 v-for="lesson in project.lessons"
@@ -149,10 +155,14 @@ const project = computed(() => getProjectById(String(route.params.id)));
                 {{ lesson }}
               </li>
             </ul>
-          </article>
+          </RevealOnScroll>
 
-          <article class="surface-panel rounded-3xl p-6">
-            <p class="text-xs font-bold uppercase text-brand">Next Steps</p>
+          <RevealOnScroll
+            as="article"
+            class="premium-card surface-panel rounded-[28px] p-6"
+            :delay="160"
+          >
+            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Next Steps</p>
             <ul class="mt-5 space-y-3">
               <li
                 v-for="step in project.nextSteps"
@@ -163,7 +173,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
                 {{ step }}
               </li>
             </ul>
-          </article>
+          </RevealOnScroll>
         </section>
       </div>
     </section>
@@ -173,14 +183,9 @@ const project = computed(() => getProjectById(String(route.params.id)));
       class="container-page flex min-h-[70vh] items-center justify-center pt-24 text-center"
     >
       <div>
-        <p class="text-xs font-bold uppercase text-brand">Project not found</p>
-        <h1 class="mt-4 text-4xl font-extrabold text-display">This case study is not available.</h1>
-        <RouterLink
-          to="/#projects"
-          class="mt-8 inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-extrabold text-[#071014]"
-        >
-          Back to projects
-        </RouterLink>
+        <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Project not found</p>
+        <h1 class="mt-4 text-4xl font-black text-display">This case study is not available.</h1>
+        <RouterLink to="/#projects" class="button-primary mt-8"> Back to projects </RouterLink>
       </div>
     </section>
   </div>
