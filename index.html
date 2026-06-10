@@ -6,16 +6,35 @@
     <meta name="author" content="Peng Seyha" />
     <meta
       name="description"
-      content="Peng Seyha portfolio for Cybersecurity, SOC Analyst, and IT Security internships. Case studies in SOC monitoring, SIEM labs, detection engineering, and secure web systems."
+      content="Peng Seyha SOC portfolio showcasing a monitoring platform, SIEM workflows, detection engineering, incident response practice, and a hands-on cybersecurity lab."
     />
-    <meta property="og:title" content="Peng Seyha - Cybersecurity & SOC Portfolio" />
+    <meta property="og:title" content="Peng Seyha - SOC Monitoring & Cybersecurity Portfolio" />
     <meta
       property="og:description"
-      content="Premium cybersecurity student portfolio with SOC monitoring case studies, security labs, certifications, and secure development work."
+      content="A product-style cybersecurity portfolio built around SOC monitoring, Splunk, pfSense, Snort, incident workflow, and practical security evidence."
     />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>Peng Seyha - Cybersecurity & SOC Portfolio</title>
+    <script>
+      (() => {
+        try {
+          const storedTheme = localStorage.getItem("portfolio-theme");
+          const preferredTheme =
+            storedTheme === "light" || storedTheme === "dark"
+              ? storedTheme
+              : window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
+
+          document.documentElement.dataset.theme = preferredTheme;
+          document.documentElement.style.colorScheme = preferredTheme;
+        } catch {
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.style.colorScheme = "dark";
+        }
+      })();
+    </script>
+    <title>Peng Seyha - SOC Monitoring & Cybersecurity Portfolio</title>
   </head>
   <body>
     <div id="app"></div>

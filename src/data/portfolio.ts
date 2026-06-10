@@ -47,6 +47,23 @@ export interface LabEntry {
   outcomes: string[];
 }
 
+export interface Capability {
+  id: string;
+  title: string;
+  premise: string;
+  evidence: string[];
+  proof: string;
+  tools: string[];
+}
+
+export interface LabSystem {
+  id: string;
+  name: string;
+  role: string;
+  evidence: string;
+  image: string;
+}
+
 export interface Experience {
   id: string;
   period: string;
@@ -72,14 +89,14 @@ export interface GithubActivity {
 export const portfolioData = {
   identity: {
     name: "Peng Seyha",
-    role: "Cybersecurity Student | SOC Analyst Aspirant",
-    headline: "Building practical SOC workflows and secure systems.",
+    role: "Computer Science Student | SOC Analyst Aspirant",
+    headline: "I turn security events into actionable intelligence.",
     subheading:
-      "Year 4 Computer Science student focused on monitoring, investigation, network defense, and security tooling.",
+      "I build practical systems for monitoring, detection, investigation, and response across a hands-on SOC lab.",
     location: "Phnom Penh, Cambodia",
     availability: "Open to Cybersecurity, SOC Analyst, and IT Security internships",
     summary:
-      "I connect SOC fundamentals with clean engineering: logs, detection logic, APIs, and documentation.",
+      "My work connects SOC fundamentals with clean engineering: log collection, detection logic, analyst workflows, APIs, and documentation that another security teammate can review.",
   },
   contact: {
     email: "pengseyha2005@gmail.com",
@@ -93,9 +110,15 @@ export const portfolioData = {
     resumeUrl: "/resume.pdf",
   },
   snapshot: [
-    { label: "Track", value: "SOC Analyst" },
-    { label: "Labs", value: "Splunk + Snort" },
-    { label: "Build", value: "Vue + NestJS" },
+    { label: "Specialty", value: "SOC Operations" },
+    { label: "Flagship", value: "Monitoring Platform" },
+    { label: "Lab Stack", value: "Splunk, pfSense, Snort" },
+  ] as Metric[],
+  operatingSignals: [
+    { label: "Primary workflow", value: "Logs to incidents" },
+    { label: "Analyst habits", value: "Triage, evidence, notes" },
+    { label: "Engineering layer", value: "NestJS, PostgreSQL, Vue" },
+    { label: "Security lens", value: "Detection and response" },
   ] as Metric[],
   principles: [
     "Security work should be clear, evidence-based, and easy to review.",
@@ -137,46 +160,50 @@ export const portfolioData = {
   projects: [
     {
       id: "cyber-shield-checker",
-      title: "Cyber Shield Checker",
-      eyebrow: "Main Case Study",
+      title: "SOC Monitoring Platform",
+      eyebrow: "Flagship Case Study",
       year: "2026",
       type: "Featured",
-      tags: ["SOC", "Cyber", "Backend"],
-      summary: "A SOC platform that turns raw alerts into structured analyst work.",
-      role: "Product design, backend architecture, detection workflow, and technical documentation",
-      image: mitreAttackImage,
-      stack: ["NestJS", "PostgreSQL", "Linux", "MITRE ATT&CK"],
+      tags: ["SOC", "SIEM", "Detection", "Incident Response"],
+      summary:
+        "A product-style SOC platform for turning firewall, IDS, and authentication events into structured analyst work.",
+      role: "Product thinking, backend architecture, detection workflow design, database modeling, and technical documentation",
+      image: splunkSiemImage,
+      stack: ["Splunk", "pfSense", "Snort", "NestJS", "PostgreSQL", "Linux"],
       metrics: [
-        { label: "Modules", value: "6" },
-        { label: "Focus", value: "SOC Workflow" },
+        { label: "Pipeline", value: "Logs to incidents" },
+        { label: "Coverage", value: "Auth, firewall, IDS" },
         { label: "Status", value: "Active Build" },
       ],
       features: [
-        "Centralized incident and case tracking",
-        "IOC management for suspicious IPs, hashes, domains, and URLs",
-        "MITRE ATT&CK technique mapping for analyst context",
-        "Alert generation and investigation status workflow",
-        "Structured reporting for repeatable SOC handoff",
+        "Security monitoring dashboard for analyst visibility",
+        "Alert management with severity and status workflow",
+        "Failed login detection with investigation context",
+        "Firewall monitoring for allowed and blocked traffic",
+        "IDS alert tracking for Snort events",
+        "Incident workflow from triage to documentation",
       ],
       challenge:
-        "Most student security projects stop at isolated tools. This project focuses on the operational layer: how an analyst receives, classifies, tracks, and documents security events.",
+        "Security teams do not need another isolated tool demo. They need repeatable workflows that move from noisy events to evidence, prioritization, and action.",
       solution:
-        "I designed a backend-driven workflow with normalized entities for alerts, incidents, IOCs, techniques, and reports so security data can move from detection to decision.",
+        "I designed the platform like an analyst workspace: collect logs, normalize events, surface detections, create alerts, investigate evidence, and document incidents.",
       architecture: [
-        "Event sources and analyst input create alert records",
-        "Alert enrichment connects IOCs and MITRE techniques",
-        "Cases group related evidence, status, severity, and notes",
-        "Reports summarize investigation history and response actions",
+        "pfSense, Snort, Linux, and Windows generate network, IDS, and authentication telemetry",
+        "Logs are collected and searched in Splunk for investigation and detection logic",
+        "NestJS exposes structured APIs for alerts, incidents, status, notes, and evidence",
+        "PostgreSQL stores normalized analyst records for repeatable case review",
+        "The interface presents dashboards, queues, and incident workflow states",
       ],
       lessons: [
-        "A useful SOC tool needs clear state transitions, not just dashboards.",
-        "Data modeling affects how quickly analysts can explain an incident.",
-        "Security interfaces should prioritize evidence, ownership, and next action.",
+        "Useful SOC tools need clear state transitions, not only dashboards.",
+        "Detection quality depends on understanding the log source and expected behavior.",
+        "Security interfaces should prioritize evidence, ownership, and the next action.",
+        "A case is only useful if another analyst can understand the timeline quickly.",
       ],
       nextSteps: [
-        "Add authentication and role-based access",
-        "Create dashboard views for severity and analyst workload",
-        "Publish screenshots and a technical write-up",
+        "Add authentication, role-based access, and audit history",
+        "Publish full dashboard screenshots and detection examples",
+        "Create sample incident reports from lab investigations",
       ],
       githubUrl: "https://github.com/pengseyha",
     },
@@ -393,6 +420,104 @@ export const portfolioData = {
       outcomes: ["Faster triage workflow", "Cleaner lab setup"],
     },
   ] as LabEntry[],
+  capabilities: [
+    {
+      id: "threat-detection",
+      title: "Threat Detection & Analysis",
+      premise:
+        "I look for suspicious behavior by asking what changed, what evidence supports it, and what risk it creates.",
+      evidence: [
+        "Failed login patterns reviewed through SIEM searches",
+        "IDS alerts validated against packet evidence",
+        "MITRE notes used to explain behavior, not decorate reports",
+      ],
+      proof: "Shown through the SOC platform, Splunk lab, and Snort IDS rule work.",
+      tools: ["Splunk", "Snort", "MITRE ATT&CK", "Wireshark"],
+    },
+    {
+      id: "siem-engineering",
+      title: "SIEM Engineering",
+      premise:
+        "I treat a SIEM as an operational system: collect usable logs, search with intent, visualize signals, and document findings.",
+      evidence: [
+        "Search workflows for triage and timeline building",
+        "Dashboard concepts for severity, source, and analyst workload",
+        "Structured alert fields that can move into incident workflow",
+      ],
+      proof: "Shown through Splunk-focused lab work and the monitoring platform architecture.",
+      tools: ["Splunk", "Linux", "PostgreSQL", "NestJS"],
+    },
+    {
+      id: "incident-response",
+      title: "Incident Response",
+      premise:
+        "I practice the analyst flow from alert to evidence, scope, severity, containment notes, and handoff.",
+      evidence: [
+        "Incident states designed for triage, investigation, containment, and closure",
+        "Evidence-first report structure for repeatable case review",
+        "Clear next-action thinking inside alert and case workflows",
+      ],
+      proof: "Shown through the flagship platform's alert and incident management design.",
+      tools: ["Case Workflow", "Documentation", "MITRE ATT&CK"],
+    },
+    {
+      id: "network-security",
+      title: "Network Security",
+      premise:
+        "I connect network fundamentals to security monitoring so firewall and IDS data are easier to reason about.",
+      evidence: [
+        "pfSense firewall monitoring concepts",
+        "Segmented network lab and topology documentation",
+        "Packet captures used to validate suspicious traffic patterns",
+      ],
+      proof: "Shown through pfSense, Snort, packet analysis, and network infrastructure labs.",
+      tools: ["pfSense", "Snort", "VLANs", "Wireshark"],
+    },
+  ] as Capability[],
+  labSystems: [
+    {
+      id: "splunk",
+      name: "Splunk",
+      role: "SIEM workspace",
+      evidence: "Searches, dashboards, alert review, and investigation notes.",
+      image: splunkSiemImage,
+    },
+    {
+      id: "pfsense",
+      name: "pfSense",
+      role: "Firewall layer",
+      evidence: "Traffic boundaries, allow and block decisions, network visibility.",
+      image: pfsenseNetworkImage,
+    },
+    {
+      id: "snort",
+      name: "Snort",
+      role: "IDS sensor",
+      evidence: "Detection rules, alert validation, and suspicious traffic tracking.",
+      image: snortIdsImage,
+    },
+    {
+      id: "linux",
+      name: "Linux",
+      role: "Host telemetry",
+      evidence: "Logs, services, shell workflows, and analyst environment setup.",
+      image: mitreAttackImage,
+    },
+    {
+      id: "kali",
+      name: "Kali",
+      role: "Security testing",
+      evidence: "Controlled scanning, validation traffic, and lab exercises.",
+      image: mitreAttackImage,
+    },
+    {
+      id: "windows",
+      name: "Windows",
+      role: "Endpoint source",
+      evidence: "Authentication events, user activity, and investigation examples.",
+      image: vueTailwindImage,
+    },
+  ] as LabSystem[],
   experience: [
     {
       id: "soc-course",

@@ -1,17 +1,32 @@
 <script setup lang="ts">
-import { Menu, X } from "lucide-vue-next";
+import { Menu, Moon, Sun, X } from "lucide-vue-next";
 import { onMounted, onUnmounted, ref } from "vue";
 
 const navItems = [
-  { label: "About", href: "/#about" },
-  { label: "Skills", href: "/#skills" },
-  { label: "SOC Platform", href: "/#featured" },
-  { label: "Labs", href: "/#labs" },
-  { label: "Journey", href: "/#experience" },
+  { label: "Story", href: "/#narrative" },
+  { label: "Platform", href: "/#flagship" },
+  { label: "Capabilities", href: "/#capabilities" },
+  { label: "Lab", href: "/#lab" },
+  { label: "Evidence", href: "/#evidence" },
 ];
 
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);
+const theme = ref<"light" | "dark">("dark");
+
+const applyTheme = (nextTheme: "light" | "dark", shouldStore = true) => {
+  theme.value = nextTheme;
+  document.documentElement.dataset.theme = nextTheme;
+  document.documentElement.style.colorScheme = nextTheme;
+
+  if (shouldStore) {
+    localStorage.setItem("portfolio-theme", nextTheme);
+  }
+};
+
+const toggleTheme = () => {
+  applyTheme(theme.value === "dark" ? "light" : "dark");
+};
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 16;
@@ -22,6 +37,18 @@ const closeMenu = () => {
 };
 
 onMounted(() => {
+  const currentTheme = document.documentElement.dataset.theme;
+
+  if (currentTheme === "light" || currentTheme === "dark") {
+    theme.value = currentTheme;
+  } else {
+    const preferredTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+
+    applyTheme(preferredTheme, false);
+  }
+
   handleScroll();
   window.addEventListener("scroll", handleScroll, { passive: true });
 });
@@ -66,21 +93,47 @@ onUnmounted(() => {
         </a>
       </nav>
 
-      <a href="/#contact" class="button-primary !hidden px-4 py-2 text-xs lg:!inline-flex">
-        Contact
-      </a>
+      <div class="hidden items-center gap-2 md:flex">
+        <button
+          type="button"
+          class="button-secondary h-10 w-10 px-0"
+          :aria-label="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+          :title="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+          @click="toggleTheme"
+        >
+          <Sun v-if="theme === 'dark'" class="h-4 w-4" />
+          <Moon v-else class="h-4 w-4" />
+        </button>
 
-      <button
-        type="button"
-        class="button-secondary h-10 w-10 px-0 md:!hidden"
-        :aria-expanded="isMenuOpen"
-        aria-controls="mobile-navigation"
-        aria-label="Toggle navigation"
-        @click="isMenuOpen = !isMenuOpen"
-      >
-        <X v-if="isMenuOpen" class="h-5 w-5" />
-        <Menu v-else class="h-5 w-5" />
-      </button>
+        <a href="/#contact" class="button-primary !hidden px-4 py-2 text-xs lg:!inline-flex">
+          Contact
+        </a>
+      </div>
+
+      <div class="flex items-center gap-2 md:hidden">
+        <button
+          type="button"
+          class="button-secondary h-10 w-10 px-0"
+          :aria-label="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+          :title="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+          @click="toggleTheme"
+        >
+          <Sun v-if="theme === 'dark'" class="h-4 w-4" />
+          <Moon v-else class="h-4 w-4" />
+        </button>
+
+        <button
+          type="button"
+          class="button-secondary h-10 w-10 px-0"
+          :aria-expanded="isMenuOpen"
+          aria-controls="mobile-navigation"
+          aria-label="Toggle navigation"
+          @click="isMenuOpen = !isMenuOpen"
+        >
+          <X v-if="isMenuOpen" class="h-5 w-5" />
+          <Menu v-else class="h-5 w-5" />
+        </button>
+      </div>
     </div>
 
     <nav
@@ -99,7 +152,7 @@ onUnmounted(() => {
       </a>
       <a
         href="/#contact"
-        class="rounded-2xl bg-brand px-3 py-3 text-center text-sm font-black text-[#03050a]"
+        class="rounded-2xl bg-brand px-3 py-3 text-center text-sm font-black text-[var(--button-primary-text)]"
         @click="closeMenu"
       >
         Contact

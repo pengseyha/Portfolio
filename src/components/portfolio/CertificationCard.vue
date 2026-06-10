@@ -9,9 +9,9 @@ defineProps<{
 </script>
 
 <template>
-  <article class="premium-card group surface-panel flex h-full gap-4 rounded-[24px] p-5">
+  <article class="premium-card group surface-panel flex h-full gap-4 rounded-lg p-5">
     <div
-      class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-brand"
+      class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-soft text-brand"
     >
       <Award class="h-5 w-5" />
     </div>

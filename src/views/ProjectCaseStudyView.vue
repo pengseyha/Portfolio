@@ -18,7 +18,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
     <section v-if="project" class="pb-20 pt-28 md:pb-24 md:pt-36">
       <div class="container-page">
         <RouterLink
-          to="/#projects"
+          to="/#evidence"
           class="quiet-link mb-8 inline-flex items-center gap-2 text-sm font-bold"
         >
           <ArrowLeft class="h-4 w-4" />
@@ -185,7 +185,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
       <div>
         <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Project not found</p>
         <h1 class="mt-4 text-4xl font-black text-display">This case study is not available.</h1>
-        <RouterLink to="/#projects" class="button-primary mt-8"> Back to projects </RouterLink>
+        <RouterLink to="/#evidence" class="button-primary mt-8"> Back to projects </RouterLink>
       </div>
     </section>
   </div>
