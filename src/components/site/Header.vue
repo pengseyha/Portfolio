@@ -1,18 +1,22 @@
 <script setup lang="ts">
-import { Menu, Moon, Sun, X } from "lucide-vue-next";
-import { onMounted, onUnmounted, ref } from "vue";
+import { Download, Menu, Moon, Sun, X } from "lucide-vue-next";
+import { onBeforeUnmount, onMounted, ref } from "vue";
+
+import { portfolioData } from "@/data/portfolio";
 
 const navItems = [
-  { label: "Story", href: "/#narrative" },
-  { label: "Platform", href: "/#flagship" },
-  { label: "Capabilities", href: "/#capabilities" },
-  { label: "Lab", href: "/#lab" },
-  { label: "Evidence", href: "/#evidence" },
+  { label: "Home", href: "/#home", id: "home" },
+  { label: "Skills", href: "/#skills", id: "skills" },
+  { label: "Projects", href: "/#projects", id: "projects" },
+  { label: "Education", href: "/#education", id: "education" },
+  { label: "Achievements", href: "/#achievements", id: "achievements" },
+  { label: "Contact", href: "/#contact", id: "contact" },
 ];
 
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);
 const theme = ref<"light" | "dark">("dark");
+const activeSection = ref<string>("home");
 
 const applyTheme = (nextTheme: "light" | "dark", shouldStore = true) => {
   theme.value = nextTheme;
@@ -36,6 +40,32 @@ const closeMenu = () => {
   isMenuOpen.value = false;
 };
 
+let sectionObserver: IntersectionObserver | null = null;
+const setupSectionObserver = () => {
+  if (!("IntersectionObserver" in window)) return;
+
+  sectionObserver = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (visible?.target.id) {
+        activeSection.value = visible.target.id;
+      }
+    },
+    {
+      rootMargin: "-40% 0px -50% 0px",
+      threshold: [0, 0.25, 0.5, 0.75, 1],
+    },
+  );
+
+  for (const item of navItems) {
+    const el = document.getElementById(item.id);
+    if (el) sectionObserver.observe(el);
+  }
+};
+
 onMounted(() => {
   const currentTheme = document.documentElement.dataset.theme;
 
@@ -51,49 +81,65 @@ onMounted(() => {
 
   handleScroll();
   window.addEventListener("scroll", handleScroll, { passive: true });
+
+  requestAnimationFrame(() => {
+    setupSectionObserver();
+  });
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   window.removeEventListener("scroll", handleScroll);
+  sectionObserver?.disconnect();
 });
 </script>
 
 <template>
   <header
-    class="fixed left-0 right-0 top-0 z-50 border-b transition-all duration-300"
-    :class="
-      isScrolled || isMenuOpen
-        ? 'border-border bg-background/82 py-3 shadow-2xl shadow-black/20 backdrop-blur-xl'
-        : 'border-transparent bg-transparent py-5'
-    "
+    class="header-bar fixed left-0 right-0 top-0 z-50 transition-all duration-300"
+    :class="{ 'is-scrolled': isScrolled || isMenuOpen }"
   >
-    <div class="container-page flex items-center justify-between gap-4">
+    <div
+      class="container-page flex items-center justify-between gap-6 px-4 transition-all duration-300"
+      :class="isScrolled || isMenuOpen ? 'py-3' : 'py-4.5'"
+    >
       <RouterLink
         to="/"
-        class="group flex min-w-0 items-center gap-3 text-display"
+        class="group flex min-w-0 items-center gap-2.5 text-display"
         aria-label="Peng Seyha home"
         @click="closeMenu"
       >
-        <span class="status-dot h-2.5 w-2.5 rounded-full bg-brand"></span>
-        <span class="truncate text-sm font-black uppercase tracking-[0.08em] md:text-base">
-          Peng Seyha
+        <span
+          class="logo-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 text-xs font-black text-white shadow-lg shadow-blue-500/30 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3"
+        >
+          PS
+        </span>
+        <span class="flex min-w-0 flex-col leading-tight">
+          <span
+            class="truncate text-sm font-black uppercase tracking-[0.08em] transition-colors group-hover:text-brand md:text-base"
+          >
+            Peng Seyha
+          </span>
+          <span
+            class="mono hidden text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-300 sm:block"
+          >
+            Cybersecurity
+          </span>
         </span>
       </RouterLink>
 
-      <nav
-        class="hidden items-center gap-1 rounded-full border border-border bg-surface/70 p-1 md:flex"
-      >
+      <nav class="hidden items-center gap-1 lg:flex">
         <a
           v-for="item in navItems"
           :key="item.label"
           :href="item.href"
-          class="quiet-link rounded-full px-3.5 py-2 text-xs font-bold"
+          class="nav-link"
+          :class="{ 'is-active': activeSection === item.id }"
         >
           {{ item.label }}
         </a>
       </nav>
 
-      <div class="hidden items-center gap-2 md:flex">
+      <div class="hidden items-center gap-3 lg:flex">
         <button
           type="button"
           class="button-secondary h-10 w-10 px-0"
@@ -101,16 +147,19 @@ onUnmounted(() => {
           :title="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
           @click="toggleTheme"
         >
-          <Sun v-if="theme === 'dark'" class="h-4 w-4" />
-          <Moon v-else class="h-4 w-4" />
+          <Sun v-if="theme === 'dark'" class="h-4 w-4 transition-transform hover:rotate-45" />
+          <Moon v-else class="h-4 w-4 transition-transform hover:-rotate-12" />
         </button>
 
-        <a href="/#contact" class="button-primary !hidden px-4 py-2 text-xs lg:!inline-flex">
-          Contact
+        <span class="h-6 w-px bg-border" aria-hidden="true"></span>
+
+        <a :href="portfolioData.contact.resumeUrl" class="button-primary px-4 py-2 text-xs">
+          <Download class="h-4 w-4" />
+          Download CV
         </a>
       </div>
 
-      <div class="flex items-center gap-2 md:hidden">
+      <div class="flex items-center gap-2 lg:hidden">
         <button
           type="button"
           class="button-secondary h-10 w-10 px-0"
@@ -130,33 +179,41 @@ onUnmounted(() => {
           aria-label="Toggle navigation"
           @click="isMenuOpen = !isMenuOpen"
         >
-          <X v-if="isMenuOpen" class="h-5 w-5" />
-          <Menu v-else class="h-5 w-5" />
+          <Transition name="page" mode="out-in">
+            <X v-if="isMenuOpen" class="h-5 w-5" />
+            <Menu v-else class="h-5 w-5" />
+          </Transition>
         </button>
       </div>
     </div>
 
-    <nav
-      v-show="isMenuOpen"
-      id="mobile-navigation"
-      class="container-page mt-4 grid gap-2 rounded-3xl border border-border bg-surface-raised p-3 shadow-2xl md:hidden"
-    >
-      <a
-        v-for="item in navItems"
-        :key="item.label"
-        :href="item.href"
-        class="rounded-2xl px-3 py-3 text-sm font-bold text-body transition duration-300 hover:bg-brand-soft hover:text-display"
-        @click="closeMenu"
+    <Transition name="page">
+      <nav
+        v-show="isMenuOpen"
+        id="mobile-navigation"
+        class="border-t border-border bg-surface-raised/98 backdrop-blur-xl lg:hidden"
       >
-        {{ item.label }}
-      </a>
-      <a
-        href="/#contact"
-        class="rounded-2xl bg-brand px-3 py-3 text-center text-sm font-black text-[var(--button-primary-text)]"
-        @click="closeMenu"
-      >
-        Contact
-      </a>
-    </nav>
+        <div class="container-page grid gap-1 px-4 py-3">
+          <a
+            v-for="item in navItems"
+            :key="item.label"
+            :href="item.href"
+            class="rounded-xl px-3 py-3 text-sm font-bold text-body transition duration-300 hover:bg-brand-soft hover:text-display"
+            :class="{ 'bg-brand-soft text-display': activeSection === item.id }"
+            @click="closeMenu"
+          >
+            {{ item.label }}
+          </a>
+          <a
+            :href="portfolioData.contact.resumeUrl"
+            class="button-primary mt-2 w-full text-sm"
+            @click="closeMenu"
+          >
+            <Download class="h-4 w-4" />
+            Download CV
+          </a>
+        </div>
+      </nav>
+    </Transition>
   </header>
 </template>

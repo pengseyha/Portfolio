@@ -20,11 +20,7 @@
         try {
           const storedTheme = localStorage.getItem("portfolio-theme");
           const preferredTheme =
-            storedTheme === "light" || storedTheme === "dark"
-              ? storedTheme
-              : window.matchMedia("(prefers-color-scheme: dark)").matches
-                ? "dark"
-                : "light";
+            storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
 
           document.documentElement.dataset.theme = preferredTheme;
           document.documentElement.style.colorScheme = preferredTheme;

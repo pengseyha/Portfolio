@@ -36,6 +36,7 @@ export interface Project {
   nextSteps: string[];
   githubUrl?: string;
   reportUrl?: string;
+  liveDemoUrl?: string;
 }
 
 export interface LabEntry {
@@ -78,6 +79,7 @@ export interface Certification {
   provider: string;
   year: string;
   focus: string;
+  verifyUrl?: string;
 }
 
 export interface GithubActivity {
@@ -104,6 +106,8 @@ export const portfolioData = {
     githubUrl: "https://github.com/pengseyha",
     linkedin: "peng-seyha",
     linkedinUrl: "https://linkedin.com/in/peng-seyha",
+    telegram: "@pengseyha",
+    telegramUrl: "https://t.me/pengseyha",
     facebook: "seyha.peng.520",
     facebookUrl: "https://facebook.com/seyha.peng.520",
     phone: "097 565 4849",
@@ -160,7 +164,7 @@ export const portfolioData = {
   projects: [
     {
       id: "cyber-shield-checker",
-      title: "SOC Monitoring Platform",
+      title: "Cyber Shield Checker",
       eyebrow: "Flagship Case Study",
       year: "2026",
       type: "Featured",
