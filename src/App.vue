@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from "vue-router";
 
-import Footer from "@/components/site/Footer.vue";
+import Footer from "@/components/layout/Footer.vue";
 
 const route = useRoute();
 </script>

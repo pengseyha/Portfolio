@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Award } from "lucide-vue-next";
 
-import type { Certification } from "@/data/portfolio";
+import type { Certification } from "@/types/portfolio";
 
 defineProps<{
   certification: Certification;
@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <article class="premium-card group surface-panel flex h-full gap-4 rounded-lg p-5">
+  <article class="premium-card group surface-panel flex h-full gap-4 rounded-lg p-6">
     <div
       class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-soft text-brand"
     >
@@ -22,7 +22,7 @@ defineProps<{
           {{ certification.title }}
         </h3>
         <span
-          class="rounded-full border border-border bg-background/45 px-2 py-0.5 text-[11px] font-bold text-muted"
+          class="rounded-full border border-border bg-background/45 px-2 py-1 text-xs font-bold text-muted"
         >
           {{ certification.year }}
         </span>

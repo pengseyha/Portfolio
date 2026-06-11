@@ -21,8 +21,8 @@ const workflow = [
 </script>
 
 <template>
-  <aside class="surface-panel blue-ring animate-orbit-soft overflow-hidden rounded-[28px]">
-    <div class="border-b border-border p-5">
+  <aside class="surface-panel blue-ring animate-orbit-soft overflow-hidden rounded-lg">
+    <div class="border-b border-border p-6">
       <div class="flex items-center justify-between gap-4">
         <div>
           <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">SOC Platform</p>
@@ -38,7 +38,7 @@ const workflow = [
         :key="metric.label"
         class="rounded-2xl border border-border bg-background/45 p-4"
       >
-        <p class="text-[11px] font-black uppercase tracking-[0.12em] text-muted">
+        <p class="text-xs font-black uppercase tracking-[0.12em] text-muted">
           {{ metric.label }}
         </p>
         <p class="mt-2 text-2xl font-black text-display">{{ metric.value }}</p>
@@ -63,7 +63,7 @@ const workflow = [
               <p class="mt-1 text-xs text-muted">{{ alert.status }}</p>
             </div>
             <span
-              class="self-start rounded-full border border-border px-2 py-1 text-[11px] font-black"
+              class="self-start rounded-full border border-border px-2 py-1 text-xs font-black"
               :class="alert.level === 'High' ? 'text-brand' : 'text-muted'"
             >
               {{ alert.level }}
@@ -79,7 +79,7 @@ const workflow = [
         :key="step.label"
         class="flex items-center gap-3 rounded-2xl border border-border bg-background/35 p-3"
       >
-        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-soft text-brand">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-soft text-brand">
           <component :is="step.icon" class="h-4 w-4" />
         </div>
         <p class="text-sm font-black text-display">{{ step.label }}</p>

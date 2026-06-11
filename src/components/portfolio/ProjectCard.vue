@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ArrowUpRight } from "lucide-vue-next";
 
-import type { Project } from "@/data/portfolio";
+import type { Project } from "@/types/portfolio";
 
 defineProps<{
   project: Project;
@@ -10,9 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <article
-    class="premium-card group surface-panel flex h-full flex-col overflow-hidden rounded-[24px]"
-  >
+  <article class="premium-card group surface-panel flex h-full flex-col overflow-hidden rounded-lg">
     <RouterLink
       :to="`/projects/${project.id}`"
       class="image-sheen block overflow-hidden"
@@ -26,7 +24,7 @@ defineProps<{
       />
     </RouterLink>
 
-    <div class="flex flex-1 flex-col p-5">
+    <div class="flex flex-1 flex-col p-6">
       <div class="mb-4 flex items-start justify-between gap-3">
         <div>
           <p class="text-xs font-black uppercase tracking-[0.14em] text-brand">
@@ -43,7 +41,7 @@ defineProps<{
         </span>
       </div>
 
-      <p class="line-clamp-2 text-sm leading-7 text-muted">{{ project.summary }}</p>
+      <p class="line-clamp-2 text-sm leading-6 text-muted">{{ project.summary }}</p>
 
       <div class="mt-5 flex flex-wrap gap-2">
         <span

@@ -100,17 +100,17 @@ onBeforeUnmount(() => {
     :class="{ 'is-scrolled': isScrolled || isMenuOpen }"
   >
     <div
-      class="container-page flex items-center justify-between gap-6 px-4 transition-all duration-300"
-      :class="isScrolled || isMenuOpen ? 'py-3' : 'py-4.5'"
+      class="container-page flex items-center justify-between gap-4 px-4 transition-all duration-300"
+      :class="isScrolled || isMenuOpen ? 'py-3' : 'py-4'"
     >
       <RouterLink
         to="/"
-        class="group flex min-w-0 items-center gap-2.5 text-display"
+        class="group flex min-w-0 items-center gap-3 text-display"
         aria-label="Peng Seyha home"
         @click="closeMenu"
       >
         <span
-          class="logo-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 text-xs font-black text-white shadow-lg shadow-blue-500/30 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3"
+          class="logo-mark flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-400 text-xs font-black text-white shadow-lg shadow-blue-500/30 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3"
         >
           PS
         </span>
@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
             Peng Seyha
           </span>
           <span
-            class="mono hidden text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-300 sm:block"
+            class="mono hidden text-xs font-bold uppercase tracking-[0.12em] text-cyan-300 sm:block"
           >
             Cybersecurity
           </span>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SkillCategory } from "@/data/portfolio";
+import type { SkillCategory } from "@/types/portfolio";
 
 defineProps<{
   category: SkillCategory;
@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="premium-card group surface-panel h-full rounded-[24px] p-5">
+  <div class="premium-card group surface-panel h-full rounded-lg p-6">
     <h3 class="text-lg font-black text-display transition-colors group-hover:text-brand">
       {{ category.title }}
     </h3>

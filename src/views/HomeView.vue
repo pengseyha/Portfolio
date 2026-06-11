@@ -24,9 +24,10 @@ import {
 } from "lucide-vue-next";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
-import Header from "@/components/site/Header.vue";
-import RevealOnScroll from "@/components/site/RevealOnScroll.vue";
-import { featuredProject, portfolioData, type Project } from "@/data/portfolio";
+import Navbar from "@/components/layout/Navbar.vue";
+import RevealOnScroll from "@/components/layout/RevealOnScroll.vue";
+import { featuredProject, portfolioData } from "@/data/portfolio";
+import type { Project } from "@/types/portfolio";
 
 const supportingProjects = computed(() =>
   portfolioData.projects.filter((project) => project.id !== featuredProject.id).slice(0, 3),
@@ -197,34 +198,15 @@ const handleScroll = () => {
   scrollProgress.value = height > 0 ? scrollTop / height : 0;
 };
 
-const mouseX = ref(0);
-const mouseY = ref(0);
-const onPointerMove = (event: PointerEvent) => {
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  mouseX.value = (event.clientX - w / 2) / w;
-  mouseY.value = (event.clientY - h / 2) / h;
-};
-
-const heroOrbStyle = computed(() => ({
-  transform: `translate3d(${mouseX.value * 24}px, ${mouseY.value * 18}px, 0)`,
-}));
-
-const heroOrbStyleAlt = computed(() => ({
-  transform: `translate3d(${mouseX.value * -16}px, ${mouseY.value * -12}px, 0)`,
-}));
-
 onMounted(() => {
   stepTyping();
   handleScroll();
   window.addEventListener("scroll", handleScroll, { passive: true });
-  window.addEventListener("pointermove", onPointerMove, { passive: true });
 });
 
 onBeforeUnmount(() => {
   if (typingTimer) window.clearTimeout(typingTimer);
   window.removeEventListener("scroll", handleScroll);
-  window.removeEventListener("pointermove", onPointerMove);
 });
 </script>
 
@@ -232,27 +214,18 @@ onBeforeUnmount(() => {
   <div class="overflow-hidden bg-background">
     <div class="scroll-progress" :style="{ transform: `scaleX(${scrollProgress})` }"></div>
 
-    <Header />
+    <Navbar />
 
-    <section id="home" class="relative scroll-mt-28 overflow-hidden pb-12 pt-32 md:pb-18 md:pt-40">
-      <div class="aurora-bg" aria-hidden="true"></div>
+    <section
+      id="home"
+      class="relative scroll-mt-24 overflow-hidden border-b border-border pb-16 pt-24 md:pb-24"
+    >
       <div class="grid-fade" aria-hidden="true"></div>
-      <span
-        class="orb orb-1 left-[-6%] top-20 h-72 w-72"
-        :style="heroOrbStyle"
-        aria-hidden="true"
-      ></span>
-      <span
-        class="orb orb-2 right-[-4%] top-40 h-80 w-80"
-        :style="heroOrbStyleAlt"
-        aria-hidden="true"
-      ></span>
-      <span class="orb orb-3 left-1/3 bottom-[-10%] h-64 w-64" aria-hidden="true"></span>
 
       <div
-        class="container-page relative z-1 grid min-h-[calc(100vh-7rem)] items-center gap-12 lg:grid-cols-[1.03fr_0.97fr]"
+        class="container-page relative z-1 grid min-h-[calc(100vh-8rem)] items-center gap-12 lg:grid-cols-[minmax(0,0.96fr)_minmax(360px,0.74fr)]"
       >
-        <div class="animate-reveal-up">
+        <div class="animate-reveal-up max-w-3xl">
           <div class="mb-6 flex flex-wrap items-center gap-3">
             <span class="badge shimmer">
               <span class="status-dot h-2 w-2 rounded-full bg-brand"></span>
@@ -266,18 +239,18 @@ onBeforeUnmount(() => {
           </div>
 
           <p class="section-kicker mb-4">PENG SEYHA / Computer Science Student</p>
-          <h1 class="max-w-4xl text-4xl font-black leading-[1.03] md:text-6xl">
+          <h1 class="max-w-3xl text-4xl font-black leading-tight md:text-5xl">
             <span class="text-display">Building Skills in</span>
-            <span class="gradient-text">&nbsp;Cybersecurity&nbsp;</span>
+            <span class="gradient-text"> Cybersecurity </span>
             <span class="text-display">and</span>
-            <span class="gradient-text-soft">&nbsp;Security Operations</span>
+            <span class="gradient-text-soft"> Security Operations</span>
           </h1>
           <p class="mt-5 max-w-xl text-base leading-7 text-body md:text-lg">
             Computer Science student focused on SOC monitoring, threat detection, networking, and
             defensive security.
           </p>
 
-          <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
             <a href="#projects" class="button-primary w-full sm:w-auto">
               View Projects
               <ExternalLink class="h-4 w-4" />
@@ -288,107 +261,63 @@ onBeforeUnmount(() => {
             </a>
           </div>
 
-          <div class="mt-10 flex flex-wrap items-center gap-2 text-xs font-bold text-muted">
+          <div class="mt-8 flex flex-wrap items-center gap-2 text-xs font-bold text-muted">
             <span class="mono uppercase tracking-[0.18em] text-cyan-300">// Stack</span>
             <span
               v-for="tag in ['Splunk', 'pfSense', 'Snort', 'Linux', 'NestJS', 'Vue']"
               :key="tag"
-              class="stat-pill !px-3 !py-1.5 !text-[11px]"
+              class="stat-pill !px-3 !py-1 !text-xs"
             >
               {{ tag }}
             </span>
           </div>
         </div>
 
-        <RevealOnScroll :delay="120" class="relative">
-          <div class="cyber-panel surface-panel blue-ring glow-border rounded-[28px] p-4 md:p-5">
+        <RevealOnScroll :delay="120" class="min-w-0">
+          <div class="surface-panel blue-ring overflow-hidden rounded-lg">
             <div
-              class="relative overflow-hidden rounded-2xl border border-border bg-background/55 p-4"
+              class="image-sheen relative aspect-[4/3] overflow-hidden border-b border-border bg-surface-raised sm:aspect-[16/11]"
             >
+              <img
+                :src="featuredProject.image"
+                :alt="`${featuredProject.title} preview`"
+                class="h-full w-full object-cover opacity-95"
+              />
               <div
-                class="relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-2xl border border-border bg-surface/80 p-5"
+                class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"
+              ></div>
+              <div
+                class="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-border bg-background/85 px-3 py-1 text-xs font-black uppercase tracking-[0.12em] text-display backdrop-blur"
               >
-                <div class="flex items-center justify-between gap-4">
-                  <div>
-                    <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">
-                      Security profile
-                    </p>
-                    <p class="mt-2 text-sm font-semibold text-muted">SOC / IT Internship Path</p>
-                  </div>
-                  <ShieldCheck class="h-7 w-7 text-cyan-300 float-slow" />
-                </div>
-
-                <div class="relative mx-auto my-8 flex h-56 w-56 items-center justify-center">
-                  <div
-                    class="absolute inset-0 animate-[spin_22s_linear_infinite] rounded-full border border-cyan-300/25"
-                  ></div>
-                  <div
-                    class="absolute inset-5 animate-[spin_30s_linear_infinite_reverse] rounded-full border border-brand/30"
-                  ></div>
-                  <span
-                    class="absolute left-2 top-10 h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_22px_rgba(6,182,212,0.75)]"
-                  ></span>
-                  <span
-                    class="absolute bottom-8 right-5 h-2.5 w-2.5 rounded-full bg-brand shadow-[0_0_22px_rgba(59,130,246,0.75)]"
-                  ></span>
-                  <span
-                    class="absolute right-8 top-3 h-2 w-2 rounded-full bg-violet-400 shadow-[0_0_18px_rgba(139,92,246,0.7)]"
-                  ></span>
-                  <div
-                    class="float-slow flex h-40 w-40 items-center justify-center rounded-[2rem] border border-border bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 shadow-2xl shadow-blue-950/50"
-                  >
-                    <div class="text-center">
-                      <p class="text-5xl font-black text-display">PS</p>
-                      <p
-                        class="mt-2 text-[11px] font-black uppercase tracking-[0.18em] text-cyan-200"
-                      >
-                        PENG SEYHA
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="grid gap-3 sm:grid-cols-3">
-                  <div
-                    class="rounded-lg border border-border bg-background/60 p-3 transition hover:border-cyan-300/40 hover:bg-background/85"
-                  >
-                    <p class="text-[11px] font-black uppercase tracking-[0.14em] text-muted">
-                      Focus
-                    </p>
-                    <p class="mt-2 text-sm font-black text-display">SOC Monitoring</p>
-                  </div>
-                  <div
-                    class="rounded-lg border border-border bg-background/60 p-3 transition hover:border-cyan-300/40 hover:bg-background/85"
-                  >
-                    <p class="text-[11px] font-black uppercase tracking-[0.14em] text-muted">
-                      Stack
-                    </p>
-                    <p class="mt-2 text-sm font-black text-display">Splunk / pfSense</p>
-                  </div>
-                  <div
-                    class="rounded-lg border border-border bg-background/60 p-3 transition hover:border-cyan-300/40 hover:bg-background/85"
-                  >
-                    <p class="text-[11px] font-black uppercase tracking-[0.14em] text-muted">
-                      Status
-                    </p>
-                    <p class="mt-2 text-sm font-black text-display">Open to Internships</p>
-                  </div>
-                </div>
+                <ShieldCheck class="h-4 w-4 text-cyan-300" />
+                SOC Portfolio
               </div>
-
               <div
-                class="float-slow absolute -right-2 top-24 hidden rounded-lg border border-border bg-surface-raised/95 p-3 shadow-2xl md:block"
+                class="absolute bottom-4 left-4 right-4 rounded-lg border border-border bg-background/85 p-4 backdrop-blur"
               >
-                <p class="text-[11px] font-black uppercase tracking-[0.14em] text-muted">
-                  Alert queue
+                <p class="section-kicker">Featured Build</p>
+                <h2 class="mt-2 text-2xl font-black text-display">{{ featuredProject.title }}</h2>
+                <p class="mt-2 line-clamp-2 text-sm leading-6 text-muted">
+                  {{ featuredProject.summary }}
                 </p>
-                <p class="mt-1 text-sm font-black text-display">12 reviewed</p>
               </div>
-              <div
-                class="float-slower absolute -left-2 bottom-24 hidden rounded-lg border border-border bg-surface-raised/95 p-3 shadow-2xl md:block"
-              >
-                <p class="text-[11px] font-black uppercase tracking-[0.14em] text-muted">Network</p>
-                <p class="mt-1 text-sm font-black text-display">Firewall + IDS</p>
+            </div>
+
+            <div class="grid gap-3 p-4 sm:grid-cols-3">
+              <div class="rounded-lg border border-border bg-background/45 p-4">
+                <ShieldCheck class="h-5 w-5 text-cyan-300" />
+                <p class="mt-3 text-xs font-black uppercase tracking-[0.12em] text-muted">Focus</p>
+                <p class="mt-1 text-sm font-black text-display">SOC Monitoring</p>
+              </div>
+              <div class="rounded-lg border border-border bg-background/45 p-4">
+                <Terminal class="h-5 w-5 text-cyan-300" />
+                <p class="mt-3 text-xs font-black uppercase tracking-[0.12em] text-muted">Stack</p>
+                <p class="mt-1 text-sm font-black text-display">Splunk / pfSense</p>
+              </div>
+              <div class="rounded-lg border border-border bg-background/45 p-4">
+                <RadioTower class="h-5 w-5 text-cyan-300" />
+                <p class="mt-3 text-xs font-black uppercase tracking-[0.12em] text-muted">Status</p>
+                <p class="mt-1 text-sm font-black text-display">Internship Ready</p>
               </div>
             </div>
           </div>
@@ -415,13 +344,13 @@ onBeforeUnmount(() => {
 
     <section
       id="skills"
-      class="relative scroll-mt-28 overflow-hidden border-t border-border py-18 md:py-24"
+      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
     >
       <div class="aurora-bg-subtle" aria-hidden="true"></div>
       <div class="container-page relative z-1">
         <RevealOnScroll>
           <p class="section-kicker">Skills</p>
-          <div class="mt-4 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+          <div class="mt-4 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <h2 class="section-title">
               Skills for
               <span class="gradient-text-soft">SOC and IT security</span>
@@ -431,12 +360,12 @@ onBeforeUnmount(() => {
           </div>
         </RevealOnScroll>
 
-        <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <RevealOnScroll
             v-for="(group, index) in skillGroups"
             :key="group.title"
             :delay="index * 70"
-            class="premium-card glow-border surface-panel group rounded-[20px] p-5"
+            class="premium-card glow-border surface-panel group rounded-lg p-6"
           >
             <div class="flex items-center gap-3">
               <div
@@ -468,7 +397,7 @@ onBeforeUnmount(() => {
 
     <section
       id="projects"
-      class="relative scroll-mt-28 overflow-hidden border-t border-border py-18 md:py-24"
+      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
     >
       <div class="container-page relative z-1">
         <RevealOnScroll>
@@ -480,26 +409,26 @@ onBeforeUnmount(() => {
         </RevealOnScroll>
 
         <RevealOnScroll
-          class="cyber-panel surface-panel blue-ring glow-border mt-10 overflow-hidden rounded-[28px]"
+          class="cyber-panel surface-panel blue-ring glow-border mt-12 overflow-hidden rounded-lg"
           :delay="80"
         >
           <div class="grid gap-0 lg:grid-cols-[0.92fr_1.08fr]">
             <div class="p-6 md:p-8">
               <span class="badge">Main Project</span>
-              <h3 class="mt-5 text-4xl font-black text-display md:text-5xl">
+              <h3 class="mt-6 text-3xl font-black text-display md:text-5xl">
                 {{ featuredProject.title }}
               </h3>
               <p class="mt-4 text-base leading-7 text-body">{{ featuredProject.summary }}</p>
 
-              <div class="mt-8 grid gap-5 md:grid-cols-2">
+              <div class="mt-8 grid gap-6 md:grid-cols-2">
                 <div>
-                  <p class="section-kicker text-[11px]">Problem</p>
+                  <p class="section-kicker text-xs">Problem</p>
                   <p class="mt-3 text-sm leading-6 text-muted">
                     Too many events become noise without triage and evidence.
                   </p>
                 </div>
                 <div>
-                  <p class="section-kicker text-[11px]">Solution</p>
+                  <p class="section-kicker text-xs">Solution</p>
                   <p class="mt-3 text-sm leading-6 text-muted">
                     A simple workflow from logs to alerts, cases, and notes.
                   </p>
@@ -507,7 +436,7 @@ onBeforeUnmount(() => {
               </div>
 
               <div class="mt-8">
-                <p class="section-kicker text-[11px]">Technologies Used</p>
+                <p class="section-kicker text-xs">Technologies Used</p>
                 <div class="mt-4 flex flex-wrap gap-2">
                   <span
                     v-for="tech in featuredProject.stack"
@@ -520,7 +449,7 @@ onBeforeUnmount(() => {
               </div>
 
               <div class="mt-8">
-                <p class="section-kicker text-[11px]">Key Features</p>
+                <p class="section-kicker text-xs">Key Features</p>
                 <div class="mt-4 grid gap-3 sm:grid-cols-2">
                   <div
                     v-for="feature in featuredProject.features.slice(0, 4)"
@@ -564,8 +493,8 @@ onBeforeUnmount(() => {
               </div>
             </div>
 
-            <div class="border-t border-border bg-background/35 p-4 lg:border-l lg:border-t-0">
-              <div class="h-full rounded-2xl border border-border bg-slate-950/80 p-4">
+            <div class="border-t border-border bg-background/35 p-6 lg:border-l lg:border-t-0">
+              <div class="h-full rounded-lg border border-border bg-slate-950/80 p-4">
                 <div class="flex items-center justify-between border-b border-border pb-4">
                   <div>
                     <p class="text-xs font-black uppercase tracking-[0.16em] text-cyan-300">
@@ -582,7 +511,7 @@ onBeforeUnmount(() => {
                     :key="metric.label"
                     class="rounded-lg border border-border bg-white/[0.03] p-4"
                   >
-                    <p class="text-[11px] font-black uppercase tracking-[0.14em] text-muted">
+                    <p class="text-xs font-black uppercase tracking-[0.12em] text-muted">
                       {{ metric.label }}
                     </p>
                     <p class="mt-2 text-lg font-black text-display">{{ metric.value }}</p>
@@ -643,12 +572,12 @@ onBeforeUnmount(() => {
           </div>
         </RevealOnScroll>
 
-        <div class="mt-6 grid gap-5 md:grid-cols-3">
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
           <RevealOnScroll
             v-for="(project, index) in supportingProjects"
             :key="project.id"
             :delay="index * 70"
-            class="premium-card glow-border surface-panel group flex h-full flex-col overflow-hidden rounded-[20px]"
+            class="premium-card glow-border surface-panel group flex h-full flex-col overflow-hidden rounded-lg"
           >
             <div class="image-sheen relative overflow-hidden">
               <img
@@ -659,14 +588,14 @@ onBeforeUnmount(() => {
               />
               <span
                 v-if="isCyberProject(project)"
-                class="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-cyan-300/40 bg-background/80 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-cyan-200 backdrop-blur"
+                class="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/40 bg-background/80 px-3 py-1 text-xs font-black uppercase tracking-[0.12em] text-cyan-200 backdrop-blur"
               >
                 <ShieldCheck class="h-3 w-3" />
                 Security Focus
               </span>
             </div>
-            <div class="flex flex-1 flex-col p-5">
-              <p class="section-kicker text-[11px]">{{ project.eyebrow }}</p>
+            <div class="flex flex-1 flex-col p-6">
+              <p class="section-kicker text-xs">{{ project.eyebrow }}</p>
               <h3
                 class="mt-2 text-xl font-black text-display transition-colors group-hover:text-brand"
               >
@@ -678,7 +607,7 @@ onBeforeUnmount(() => {
                 <span
                   v-for="tech in project.stack.slice(0, 4)"
                   :key="tech"
-                  class="rounded-full border border-border bg-background/45 px-2.5 py-1 text-[11px] font-bold text-body"
+                  class="rounded-full border border-border bg-background/45 px-3 py-1 text-xs font-bold text-body"
                 >
                   {{ tech }}
                 </span>
@@ -722,7 +651,7 @@ onBeforeUnmount(() => {
 
     <section
       id="education"
-      class="relative scroll-mt-28 overflow-hidden border-t border-border py-18 md:py-24"
+      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
     >
       <div class="container-page relative z-1">
         <RevealOnScroll>
@@ -733,7 +662,7 @@ onBeforeUnmount(() => {
           </h2>
         </RevealOnScroll>
 
-        <div class="mt-10 max-w-4xl">
+        <div class="mt-12 max-w-4xl">
           <div class="relative">
             <div
               class="absolute bottom-0 left-4 top-0 w-px bg-gradient-to-b from-transparent via-cyan-300/40 to-transparent"
@@ -750,7 +679,7 @@ onBeforeUnmount(() => {
               >
                 <span class="timeline-node h-2.5 w-2.5 rounded-full bg-cyan-300"></span>
               </div>
-              <p class="section-kicker text-[11px]">{{ item.year }}</p>
+              <p class="section-kicker text-xs">{{ item.year }}</p>
               <h3 class="mt-2 text-xl font-black text-display">{{ item.title }}</h3>
             </RevealOnScroll>
           </div>
@@ -760,7 +689,7 @@ onBeforeUnmount(() => {
 
     <section
       id="achievements"
-      class="relative scroll-mt-28 overflow-hidden border-t border-border py-18 md:py-24"
+      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
     >
       <div class="aurora-bg-subtle" aria-hidden="true"></div>
       <div class="container-page relative z-1">
@@ -772,19 +701,19 @@ onBeforeUnmount(() => {
           </h2>
         </RevealOnScroll>
 
-        <div class="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+        <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-5">
           <RevealOnScroll
             v-for="(achievement, index) in achievements"
             :key="achievement.title"
             :delay="index * 60"
-            class="premium-card glow-border surface-panel rounded-lg p-5"
+            class="premium-card glow-border surface-panel rounded-lg p-6"
           >
             <div
               class="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-soft text-brand transition-transform duration-300 hover:scale-110 hover:rotate-6"
             >
               <component :is="achievement.icon" class="h-5 w-5" />
             </div>
-            <h3 class="mt-5 text-base font-black text-display">{{ achievement.title }}</h3>
+            <h3 class="mt-4 text-lg font-black text-display">{{ achievement.title }}</h3>
             <p class="mt-3 text-sm leading-6 text-muted">{{ achievement.description }}</p>
           </RevealOnScroll>
         </div>
@@ -793,7 +722,7 @@ onBeforeUnmount(() => {
 
     <section
       id="certificates"
-      class="relative scroll-mt-28 overflow-hidden border-t border-border py-18 md:py-24"
+      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
     >
       <div class="container-page relative z-1">
         <RevealOnScroll>
@@ -804,16 +733,16 @@ onBeforeUnmount(() => {
           </h2>
         </RevealOnScroll>
 
-        <div class="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           <RevealOnScroll
             v-for="(certificate, index) in portfolioData.certifications"
             :key="certificate.id"
             :delay="index * 50"
-            class="premium-card glow-border surface-panel rounded-lg p-5"
+            class="premium-card glow-border surface-panel rounded-lg p-6"
           >
             <div class="flex items-start justify-between gap-4">
               <div>
-                <p class="section-kicker text-[11px]">{{ certificate.provider }}</p>
+                <p class="section-kicker text-xs">{{ certificate.provider }}</p>
                 <h3 class="mt-3 text-xl font-black text-display">{{ certificate.title }}</h3>
               </div>
               <Award
@@ -846,17 +775,17 @@ onBeforeUnmount(() => {
 
     <section
       id="contact"
-      class="relative scroll-mt-28 overflow-hidden border-t border-border py-18 md:py-24"
+      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
     >
       <div class="aurora-bg" aria-hidden="true"></div>
       <div class="container-page relative z-1">
         <RevealOnScroll
-          class="cyber-panel surface-panel blue-ring glow-border rounded-[28px] p-6 md:p-10"
+          class="cyber-panel surface-panel blue-ring glow-border rounded-lg p-6 md:p-8"
         >
-          <div class="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+          <div class="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
             <div>
               <p class="section-kicker">Contact</p>
-              <h2 class="mt-4 text-4xl font-black leading-tight md:text-6xl">
+              <h2 class="mt-4 text-4xl font-black leading-tight md:text-5xl">
                 <span class="text-display">Let&apos;s Build</span>
                 <span class="gradient-text">Secure Systems</span>
                 <span class="text-display">Together</span>

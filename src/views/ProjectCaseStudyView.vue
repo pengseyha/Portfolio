@@ -3,8 +3,8 @@ import { ArrowLeft, ArrowUpRight, CheckCircle2, Github } from "lucide-vue-next";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
-import Header from "@/components/site/Header.vue";
-import RevealOnScroll from "@/components/site/RevealOnScroll.vue";
+import Navbar from "@/components/layout/Navbar.vue";
+import RevealOnScroll from "@/components/layout/RevealOnScroll.vue";
 import { getProjectById } from "@/data/portfolio";
 
 const route = useRoute();
@@ -13,9 +13,9 @@ const project = computed(() => getProjectById(String(route.params.id)));
 
 <template>
   <div class="min-h-screen bg-background">
-    <Header />
+    <Navbar />
 
-    <section v-if="project" class="pb-20 pt-28 md:pb-24 md:pt-36">
+    <section v-if="project" class="pb-16 pt-24 md:pb-24">
       <div class="container-page">
         <RouterLink
           to="/#projects"
@@ -25,10 +25,10 @@ const project = computed(() => getProjectById(String(route.params.id)));
           Back to projects
         </RouterLink>
 
-        <RevealOnScroll class="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <RevealOnScroll class="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
             <p class="text-xs font-bold uppercase text-brand">{{ project.eyebrow }}</p>
-            <h1 class="mt-4 text-4xl font-extrabold text-display md:text-6xl">
+            <h1 class="mt-4 text-5xl font-extrabold leading-tight text-display">
               {{ project.title }}
             </h1>
             <p class="mt-6 text-lg leading-8 text-muted">{{ project.summary }}</p>
@@ -51,7 +51,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
             </div>
           </div>
 
-          <div class="image-sheen premium-card surface-panel overflow-hidden rounded-[28px]">
+          <div class="image-sheen premium-card surface-panel overflow-hidden rounded-lg">
             <img
               :src="project.image"
               :alt="`${project.title} case study preview`"
@@ -60,12 +60,12 @@ const project = computed(() => getProjectById(String(route.params.id)));
           </div>
         </RevealOnScroll>
 
-        <div class="mt-10 grid gap-4 md:grid-cols-3">
+        <div class="mt-12 grid gap-4 md:grid-cols-3">
           <RevealOnScroll
             v-for="(metric, index) in project.metrics"
             :key="metric.label"
             :delay="index * 70"
-            class="premium-card rounded-[24px] border border-border bg-surface/70 p-5"
+            class="premium-card rounded-lg border border-border bg-surface/70 p-6"
           >
             <p class="text-xs font-bold uppercase text-muted">{{ metric.label }}</p>
             <p class="mt-2 text-2xl font-extrabold text-display">{{ metric.value }}</p>
@@ -73,7 +73,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
         </div>
 
         <div class="mt-12 grid gap-6 lg:grid-cols-2">
-          <RevealOnScroll as="article" class="premium-card surface-panel rounded-[28px] p-6 md:p-8">
+          <RevealOnScroll as="article" class="premium-card surface-panel rounded-lg p-6 md:p-8">
             <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Challenge</p>
             <h2 class="mt-3 text-2xl font-black text-display">What needed to be solved</h2>
             <p class="mt-5 leading-8 text-muted">{{ project.challenge }}</p>
@@ -81,7 +81,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
 
           <RevealOnScroll
             as="article"
-            class="premium-card surface-panel rounded-[28px] p-6 md:p-8"
+            class="premium-card surface-panel rounded-lg p-6 md:p-8"
             :delay="90"
           >
             <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Solution</p>
@@ -91,7 +91,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
         </div>
 
         <section class="mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <RevealOnScroll class="premium-card surface-panel rounded-[28px] p-6 md:p-8">
+          <RevealOnScroll class="premium-card surface-panel rounded-lg p-6 md:p-8">
             <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Technologies</p>
             <div class="mt-5 flex flex-wrap gap-2">
               <span
@@ -107,7 +107,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
             <p class="mt-3 leading-7 text-muted">{{ project.role }}</p>
           </RevealOnScroll>
 
-          <RevealOnScroll class="premium-card surface-panel rounded-[28px] p-6 md:p-8" :delay="90">
+          <RevealOnScroll class="premium-card surface-panel rounded-lg p-6 md:p-8" :delay="90">
             <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Architecture</p>
             <h2 class="mt-3 text-2xl font-black text-display">System flow</h2>
 
@@ -125,7 +125,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
         </section>
 
         <section class="mt-12 grid gap-6 lg:grid-cols-3">
-          <RevealOnScroll as="article" class="premium-card surface-panel rounded-[28px] p-6">
+          <RevealOnScroll as="article" class="premium-card surface-panel rounded-lg p-6">
             <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Features</p>
             <ul class="mt-5 space-y-3">
               <li
@@ -141,7 +141,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
 
           <RevealOnScroll
             as="article"
-            class="premium-card surface-panel rounded-[28px] p-6"
+            class="premium-card surface-panel rounded-lg p-6"
             :delay="80"
           >
             <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Lessons Learned</p>
@@ -159,7 +159,7 @@ const project = computed(() => getProjectById(String(route.params.id)));
 
           <RevealOnScroll
             as="article"
-            class="premium-card surface-panel rounded-[28px] p-6"
+            class="premium-card surface-panel rounded-lg p-6"
             :delay="160"
           >
             <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Next Steps</p>
@@ -184,7 +184,9 @@ const project = computed(() => getProjectById(String(route.params.id)));
     >
       <div>
         <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Project not found</p>
-        <h1 class="mt-4 text-4xl font-black text-display">This case study is not available.</h1>
+        <h1 class="mt-4 text-5xl font-black leading-tight text-display">
+          This case study is not available.
+        </h1>
         <RouterLink to="/#projects" class="button-primary mt-8"> Back to projects </RouterLink>
       </div>
     </section>

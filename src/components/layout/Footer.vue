@@ -7,7 +7,7 @@ const year = new Date().getFullYear();
 </script>
 
 <template>
-  <footer class="border-t border-border/70 bg-background py-10">
+  <footer class="border-t border-border/70 bg-background py-12">
     <div class="container-page flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
       <div>
         <p class="text-sm font-semibold text-display">{{ portfolioData.identity.name }}</p>

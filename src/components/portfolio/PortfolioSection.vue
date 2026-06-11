@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SectionTitle from "@/components/ui/SectionTitle.vue";
+
 withDefaults(
   defineProps<{
     id: string;
@@ -15,17 +17,13 @@ withDefaults(
 </script>
 
 <template>
-  <section :id="id" class="scroll-mt-24 border-t border-border py-18 md:py-24">
+  <section :id="id" class="scroll-mt-24 border-t border-border py-16 md:py-24">
     <div class="container-page">
       <div
-        class="mb-10 md:mb-14"
+        class="mb-12"
         :class="align === 'center' ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl'"
       >
-        <p class="mb-3 text-xs font-black uppercase tracking-[0.16em] text-brand">{{ eyebrow }}</p>
-        <h2 class="max-w-3xl text-3xl font-black text-display md:text-5xl">{{ title }}</h2>
-        <p v-if="description" class="mt-4 text-base leading-8 text-muted md:text-lg">
-          {{ description }}
-        </p>
+        <SectionTitle :eyebrow="eyebrow" :title="title" :description="description" :align="align" />
       </div>
 
       <slot></slot>
