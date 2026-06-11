@@ -10,6 +10,7 @@ const navItems = [
   { label: "Projects", href: "/#projects", id: "projects" },
   { label: "Education", href: "/#education", id: "education" },
   { label: "Achievements", href: "/#achievements", id: "achievements" },
+  { label: "Certificates", href: "/#certificates", id: "certificates" },
   { label: "Contact", href: "/#contact", id: "contact" },
 ];
 
@@ -127,7 +128,7 @@ onBeforeUnmount(() => {
         </span>
       </RouterLink>
 
-      <nav class="hidden items-center gap-1 lg:flex">
+      <nav class="hidden items-center gap-1 xl:flex">
         <a
           v-for="item in navItems"
           :key="item.label"
@@ -139,7 +140,7 @@ onBeforeUnmount(() => {
         </a>
       </nav>
 
-      <div class="hidden items-center gap-3 lg:flex">
+      <div class="hidden items-center gap-3 xl:flex">
         <button
           type="button"
           class="button-secondary h-10 w-10 px-0"
@@ -159,7 +160,7 @@ onBeforeUnmount(() => {
         </a>
       </div>
 
-      <div class="flex items-center gap-2 lg:hidden">
+      <div class="flex items-center gap-2 xl:hidden">
         <button
           type="button"
           class="button-secondary h-10 w-10 px-0"
@@ -191,7 +192,7 @@ onBeforeUnmount(() => {
       <nav
         v-show="isMenuOpen"
         id="mobile-navigation"
-        class="border-t border-border bg-surface-raised/98 backdrop-blur-xl lg:hidden"
+        class="border-t border-border bg-surface-raised/98 backdrop-blur-xl xl:hidden"
       >
         <div class="container-page grid gap-1 px-4 py-3">
           <a

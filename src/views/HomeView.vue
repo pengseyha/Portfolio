@@ -542,8 +542,15 @@ onBeforeUnmount(() => {
                   class="button-primary w-full sm:w-auto"
                 >
                   <Github class="h-4 w-4" />
-                  GitHub
+                  GitHub Profile
                 </a>
+                <RouterLink
+                  :to="`/projects/${featuredProject.id}`"
+                  class="button-secondary w-full sm:w-auto"
+                >
+                  <BookOpenCheck class="h-4 w-4 text-brand" />
+                  Case Study
+                </RouterLink>
                 <a
                   v-if="featuredProject.liveDemoUrl"
                   :href="featuredProject.liveDemoUrl"
@@ -825,6 +832,12 @@ onBeforeUnmount(() => {
               >
                 Verify
               </a>
+              <span
+                v-else
+                class="rounded-full border border-border bg-background/45 px-3 py-1 text-xs font-black text-muted"
+              >
+                Proof available
+              </span>
             </div>
           </RevealOnScroll>
         </div>
