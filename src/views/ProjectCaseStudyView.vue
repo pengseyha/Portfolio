@@ -1,14 +1,76 @@
 <script setup lang="ts">
-import { ArrowLeft, ArrowUpRight, CheckCircle2, Github } from "lucide-vue-next";
-import { computed } from "vue";
+import { ArrowLeft, ArrowUp, ArrowUpRight, CheckCircle2, Github } from "lucide-vue-next";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import Navbar from "@/components/layout/Navbar.vue";
 import RevealOnScroll from "@/components/layout/RevealOnScroll.vue";
+import AnimatedCounter from "@/components/ui/AnimatedCounter.vue";
 import { getProjectById } from "@/data/portfolio";
 
 const route = useRoute();
 const project = computed(() => getProjectById(String(route.params.id)));
+
+const tocSections = [
+  { id: "overview", label: "Overview" },
+  { id: "challenge-solution", label: "Challenge & Solution" },
+  { id: "architecture", label: "Tech & Architecture" },
+  { id: "details", label: "Features & Lessons" },
+];
+
+const activeSection = ref(tocSections[0].id);
+const showBackToTop = ref(false);
+let sectionObserver: IntersectionObserver | null = null;
+
+const handleScroll = () => {
+  showBackToTop.value = window.scrollY > 480;
+};
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+const setupSectionObserver = () => {
+  sectionObserver?.disconnect();
+  if (!("IntersectionObserver" in window)) return;
+
+  sectionObserver = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (visible?.target.id) {
+        activeSection.value = visible.target.id;
+      }
+    },
+    { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+  );
+
+  for (const section of tocSections) {
+    const el = document.getElementById(section.id);
+    if (el) sectionObserver.observe(el);
+  }
+};
+
+onMounted(() => {
+  handleScroll();
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  nextTick(() => requestAnimationFrame(setupSectionObserver));
+});
+
+watch(
+  () => project.value?.id,
+  () => {
+    activeSection.value = tocSections[0].id;
+    nextTick(() => requestAnimationFrame(setupSectionObserver));
+  },
+);
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", handleScroll);
+  sectionObserver?.disconnect();
+});
 </script>
 
 <template>
@@ -22,159 +84,172 @@ const project = computed(() => getProjectById(String(route.params.id)));
           class="quiet-link mb-8 inline-flex items-center gap-2 text-sm font-bold"
         >
           <ArrowLeft class="h-4 w-4" />
-          Back to projects
+          Back to case files
         </RouterLink>
 
-        <RevealOnScroll class="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div>
-            <p class="text-xs font-bold uppercase text-brand">{{ project.eyebrow }}</p>
-            <h1 class="mt-4 text-5xl font-extrabold leading-tight text-display">
-              {{ project.title }}
-            </h1>
-            <p class="mt-6 text-lg leading-8 text-muted">{{ project.summary }}</p>
-
-            <div class="mt-8 flex flex-wrap gap-3">
+        <div class="lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:items-start lg:gap-10">
+          <aside class="hidden lg:sticky lg:top-28 lg:block">
+            <p class="px-3 text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+              On this page
+            </p>
+            <nav class="mt-3 flex flex-col gap-1">
               <a
-                v-if="project.githubUrl"
-                :href="project.githubUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="button-primary"
+                v-for="section in tocSections"
+                :key="section.id"
+                :href="`#${section.id}`"
+                class="toc-link"
+                :class="{ 'is-active': activeSection === section.id }"
               >
-                <Github class="h-4 w-4" />
-                View repository
+                {{ section.label }}
               </a>
-              <a v-if="project.reportUrl" :href="project.reportUrl" class="button-secondary">
-                Read report
-                <ArrowUpRight class="h-4 w-4" />
-              </a>
-            </div>
-          </div>
+            </nav>
+          </aside>
 
-          <div class="image-sheen premium-card surface-panel overflow-hidden rounded-lg">
-            <img
-              :src="project.image"
-              :alt="`${project.title} case study preview`"
-              class="aspect-[16/11] w-full object-cover"
-            />
-          </div>
-        </RevealOnScroll>
+          <div class="space-y-12">
+            <section id="overview" class="scroll-mt-28">
+              <RevealOnScroll class="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+                <div>
+                  <p class="section-kicker">{{ project.eyebrow }}</p>
+                  <h1 class="mt-4 text-4xl font-bold leading-tight text-display md:text-5xl">
+                    {{ project.title }}
+                  </h1>
+                  <p class="mt-6 text-lg leading-8 text-muted">{{ project.summary }}</p>
 
-        <div class="mt-12 grid gap-4 md:grid-cols-3">
-          <RevealOnScroll
-            v-for="(metric, index) in project.metrics"
-            :key="metric.label"
-            :delay="index * 70"
-            class="premium-card rounded-lg border border-border bg-surface/70 p-6"
-          >
-            <p class="text-xs font-bold uppercase text-muted">{{ metric.label }}</p>
-            <p class="mt-2 text-2xl font-extrabold text-display">{{ metric.value }}</p>
-          </RevealOnScroll>
-        </div>
+                  <div class="mt-8 flex flex-wrap gap-3">
+                    <a
+                      v-if="project.githubUrl"
+                      :href="project.githubUrl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="button-primary"
+                    >
+                      <Github class="h-4 w-4" />
+                      View repository
+                    </a>
+                    <a v-if="project.reportUrl" :href="project.reportUrl" class="button-secondary">
+                      Read report
+                      <ArrowUpRight class="h-4 w-4" />
+                    </a>
+                  </div>
+                </div>
 
-        <div class="mt-12 grid gap-6 lg:grid-cols-2">
-          <RevealOnScroll as="article" class="premium-card surface-panel rounded-lg p-6 md:p-8">
-            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Challenge</p>
-            <h2 class="mt-3 text-2xl font-black text-display">What needed to be solved</h2>
-            <p class="mt-5 leading-8 text-muted">{{ project.challenge }}</p>
-          </RevealOnScroll>
+                <div class="spotlight-ring">
+                  <div class="card overflow-hidden">
+                    <img
+                      :src="project.image"
+                      :alt="`${project.title} case study preview`"
+                      class="aspect-16/11 w-full object-cover"
+                    />
+                  </div>
+                </div>
+              </RevealOnScroll>
 
-          <RevealOnScroll
-            as="article"
-            class="premium-card surface-panel rounded-lg p-6 md:p-8"
-            :delay="90"
-          >
-            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Solution</p>
-            <h2 class="mt-3 text-2xl font-black text-display">How I approached it</h2>
-            <p class="mt-5 leading-8 text-muted">{{ project.solution }}</p>
-          </RevealOnScroll>
-        </div>
-
-        <section class="mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <RevealOnScroll class="premium-card surface-panel rounded-lg p-6 md:p-8">
-            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Technologies</p>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span
-                v-for="tech in project.stack"
-                :key="tech"
-                class="rounded-full border border-border/70 bg-background/45 px-3 py-1.5 text-sm font-semibold text-body"
-              >
-                {{ tech }}
-              </span>
-            </div>
-
-            <p class="mt-8 text-xs font-bold uppercase text-brand">Role</p>
-            <p class="mt-3 leading-7 text-muted">{{ project.role }}</p>
-          </RevealOnScroll>
-
-          <RevealOnScroll class="premium-card surface-panel rounded-lg p-6 md:p-8" :delay="90">
-            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Architecture</p>
-            <h2 class="mt-3 text-2xl font-black text-display">System flow</h2>
-
-            <div class="mt-6 grid gap-4">
-              <div v-for="(step, index) in project.architecture" :key="step" class="flex gap-4">
-                <span
-                  class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-extrabold text-brand"
+              <div class="mt-12 grid gap-4 md:grid-cols-3">
+                <RevealOnScroll
+                  v-for="(metric, index) in project.metrics"
+                  :key="metric.label"
+                  :delay="index * 70"
+                  class="card p-6"
                 >
-                  {{ index + 1 }}
-                </span>
-                <p class="pt-1 text-sm leading-7 text-muted">{{ step }}</p>
+                  <p class="text-xs font-medium uppercase tracking-widest text-muted">
+                    {{ metric.label }}
+                  </p>
+                  <p class="mt-2 text-2xl font-bold text-display">
+                    <AnimatedCounter :value="metric.value" />
+                  </p>
+                </RevealOnScroll>
               </div>
-            </div>
-          </RevealOnScroll>
-        </section>
+            </section>
 
-        <section class="mt-12 grid gap-6 lg:grid-cols-3">
-          <RevealOnScroll as="article" class="premium-card surface-panel rounded-lg p-6">
-            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Features</p>
-            <ul class="mt-5 space-y-3">
-              <li
-                v-for="feature in project.features"
-                :key="feature"
-                class="flex gap-3 text-sm text-muted"
-              >
-                <CheckCircle2 class="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                {{ feature }}
-              </li>
-            </ul>
-          </RevealOnScroll>
+            <section id="challenge-solution" class="scroll-mt-28 grid gap-6 lg:grid-cols-2">
+              <RevealOnScroll as="article" class="card p-6 md:p-8">
+                <p class="section-kicker">Challenge</p>
+                <h2 class="mt-3 text-2xl font-bold text-display">What needed to be solved</h2>
+                <p class="mt-5 leading-8 text-muted">{{ project.challenge }}</p>
+              </RevealOnScroll>
 
-          <RevealOnScroll
-            as="article"
-            class="premium-card surface-panel rounded-lg p-6"
-            :delay="80"
-          >
-            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Lessons Learned</p>
-            <ul class="mt-5 space-y-3">
-              <li
-                v-for="lesson in project.lessons"
-                :key="lesson"
-                class="flex gap-3 text-sm text-muted"
-              >
-                <CheckCircle2 class="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                {{ lesson }}
-              </li>
-            </ul>
-          </RevealOnScroll>
+              <RevealOnScroll as="article" class="card p-6 md:p-8" :delay="90">
+                <p class="section-kicker">Solution</p>
+                <h2 class="mt-3 text-2xl font-bold text-display">How I approached it</h2>
+                <p class="mt-5 leading-8 text-muted">{{ project.solution }}</p>
+              </RevealOnScroll>
+            </section>
 
-          <RevealOnScroll
-            as="article"
-            class="premium-card surface-panel rounded-lg p-6"
-            :delay="160"
-          >
-            <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Next Steps</p>
-            <ul class="mt-5 space-y-3">
-              <li
-                v-for="step in project.nextSteps"
-                :key="step"
-                class="flex gap-3 text-sm text-muted"
-              >
-                <CheckCircle2 class="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                {{ step }}
-              </li>
-            </ul>
-          </RevealOnScroll>
-        </section>
+            <section id="architecture" class="scroll-mt-28 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+              <RevealOnScroll class="card p-6 md:p-8">
+                <p class="section-kicker">Technologies</p>
+                <div class="mt-5 flex flex-wrap gap-2">
+                  <span v-for="tech in project.stack" :key="tech" class="tag">
+                    {{ tech }}
+                  </span>
+                </div>
+
+                <p class="section-kicker mt-8">Role</p>
+                <p class="mt-3 leading-7 text-muted">{{ project.role }}</p>
+              </RevealOnScroll>
+
+              <RevealOnScroll class="card p-6 md:p-8" :delay="90">
+                <p class="section-kicker">Architecture</p>
+                <h2 class="mt-3 text-2xl font-bold text-display">System flow</h2>
+
+                <div class="mt-6 grid gap-4">
+                  <div v-for="(step, index) in project.architecture" :key="step" class="flex gap-4">
+                    <span
+                      class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-soft text-sm font-semibold text-brand"
+                    >
+                      {{ index + 1 }}
+                    </span>
+                    <p class="pt-1 text-sm leading-7 text-muted">{{ step }}</p>
+                  </div>
+                </div>
+              </RevealOnScroll>
+            </section>
+
+            <section id="details" class="scroll-mt-28 grid gap-6 lg:grid-cols-3">
+              <RevealOnScroll as="article" class="card p-6">
+                <p class="section-kicker">Features</p>
+                <ul class="mt-5 space-y-3">
+                  <li
+                    v-for="feature in project.features"
+                    :key="feature"
+                    class="flex gap-3 text-sm text-muted"
+                  >
+                    <CheckCircle2 class="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                    {{ feature }}
+                  </li>
+                </ul>
+              </RevealOnScroll>
+
+              <RevealOnScroll as="article" class="card p-6" :delay="80">
+                <p class="section-kicker">Lessons learned</p>
+                <ul class="mt-5 space-y-3">
+                  <li
+                    v-for="lesson in project.lessons"
+                    :key="lesson"
+                    class="flex gap-3 text-sm text-muted"
+                  >
+                    <CheckCircle2 class="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                    {{ lesson }}
+                  </li>
+                </ul>
+              </RevealOnScroll>
+
+              <RevealOnScroll as="article" class="card p-6" :delay="160">
+                <p class="section-kicker">Next steps</p>
+                <ul class="mt-5 space-y-3">
+                  <li
+                    v-for="step in project.nextSteps"
+                    :key="step"
+                    class="flex gap-3 text-sm text-muted"
+                  >
+                    <CheckCircle2 class="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                    {{ step }}
+                  </li>
+                </ul>
+              </RevealOnScroll>
+            </section>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -183,12 +258,22 @@ const project = computed(() => getProjectById(String(route.params.id)));
       class="container-page flex min-h-[70vh] items-center justify-center pt-24 text-center"
     >
       <div>
-        <p class="text-xs font-black uppercase tracking-[0.16em] text-brand">Project not found</p>
-        <h1 class="mt-4 text-5xl font-black leading-tight text-display">
+        <p class="section-kicker mx-auto justify-center">Project not found</p>
+        <h1 class="mt-4 text-4xl font-bold leading-tight text-display md:text-5xl">
           This case study is not available.
         </h1>
-        <RouterLink to="/#projects" class="button-primary mt-8"> Back to projects </RouterLink>
+        <RouterLink to="/#projects" class="button-primary mt-8"> Back to case files </RouterLink>
       </div>
     </section>
+
+    <button
+      type="button"
+      class="back-to-top h-11 w-11"
+      :class="{ 'is-visible': showBackToTop }"
+      aria-label="Back to top"
+      @click="scrollToTop"
+    >
+      <ArrowUp class="h-4 w-4" />
+    </button>
   </div>
 </template>
