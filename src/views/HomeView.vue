@@ -2,12 +2,15 @@
 import {
   ArrowUpRight,
   Award,
+  BarChart3,
   BookOpenCheck,
   CheckCircle2,
   Code2,
   Cpu,
+  Database,
   Download,
   ExternalLink,
+  Eye,
   FileSearch,
   Github,
   GraduationCap,
@@ -76,6 +79,14 @@ const alertStream = [
   { label: "Incident note added", severity: "Info" },
 ];
 
+const heroParticles = Array.from({ length: 22 }, (_, index) => ({
+  id: index,
+  left: `${6 + ((index * 17) % 88)}%`,
+  top: `${10 + ((index * 23) % 76)}%`,
+  delay: `${(index % 8) * 0.55}s`,
+  duration: `${7 + (index % 5)}s`,
+}));
+
 const coverageBars = [
   { label: "Authentication", value: 92 },
   { label: "Firewall", value: 85 },
@@ -121,7 +132,74 @@ const flagshipWorkflow = [
   { label: "Firewall Logs", description: "pfSense, auth, IDS events", icon: RadioTower },
   { label: "Detection Engine", description: "Rules, searches, severity", icon: ShieldCheck },
   { label: "Alert Correlation", description: "Evidence and context", icon: Terminal },
-  { label: "Incident Dashboard", description: "Triage, notes, handoff", icon: CheckCircle2 },
+  { label: "Incident Dashboard", description: "Triage, notes, handoff", icon: BarChart3 },
+  { label: "Investigation Workflow", description: "Evidence, owners, closure", icon: CheckCircle2 },
+];
+
+const productShowcaseShots = [
+  {
+    title: "Product screenshots",
+    label: "Cyber Shield command center",
+    image: featuredProject.image,
+    icon: Eye,
+  },
+  {
+    title: "Dashboard screenshots",
+    label: "SOC overview and severity trends",
+    image: portfolioData.labSystems[0].image,
+    icon: BarChart3,
+  },
+  {
+    title: "Architecture diagrams",
+    label: "Telemetry to incident pipeline",
+    image: portfolioData.labSystems[1].image,
+    icon: Database,
+  },
+  {
+    title: "Workflow diagrams",
+    label: "Triage, evidence, and handoff",
+    image: portfolioData.labSystems[2].image,
+    icon: Workflow,
+  },
+];
+
+const labSnapshots = [
+  {
+    title: "Splunk dashboards",
+    summary: "SIEM views for alert volume, source activity, and timeline review.",
+    image: portfolioData.labSystems[0].image,
+    meta: "SIEM",
+  },
+  {
+    title: "Kali Linux labs",
+    summary: "Controlled validation traffic and analyst tooling in an isolated lab.",
+    image: portfolioData.labSystems[4].image,
+    meta: "Testing",
+  },
+  {
+    title: "Wireshark analysis",
+    summary: "Packet evidence used to confirm suspicious traffic behavior.",
+    image: portfolioData.projects.find((project) => project.id === "snort-ids-rules")?.image,
+    meta: "PCAP",
+  },
+  {
+    title: "Snort alerts",
+    summary: "IDS rule output reviewed for severity, signal quality, and context.",
+    image: portfolioData.labSystems[2].image,
+    meta: "IDS",
+  },
+  {
+    title: "pfSense configuration",
+    summary: "Firewall policy and network boundary decisions documented for review.",
+    image: portfolioData.labSystems[1].image,
+    meta: "Firewall",
+  },
+  {
+    title: "SOC investigations",
+    summary: "Case notes, evidence, and next action thinking from lab incidents.",
+    image: featuredProject.image,
+    meta: "IR",
+  },
 ];
 
 const skillGroups = [
@@ -321,10 +399,25 @@ onBeforeUnmount(() => {
 
     <section
       id="home"
-      class="hero-lab relative scroll-mt-24 overflow-hidden border-b border-border pb-10 pt-28 md:pb-14 md:pt-32 xl:pt-32"
+      class="hero-lab hero-premium relative scroll-mt-24 overflow-hidden border-b border-border pb-12 pt-28 md:pb-16 md:pt-32 xl:pt-32"
     >
+      <div class="hero-aurora" aria-hidden="true"></div>
       <div class="grid-fade" aria-hidden="true"></div>
+      <div class="hero-spotlight" aria-hidden="true"></div>
       <div class="network-pattern" aria-hidden="true"></div>
+      <div class="particle-field" aria-hidden="true">
+        <span
+          v-for="particle in heroParticles"
+          :key="particle.id"
+          class="hero-particle"
+          :style="{
+            left: particle.left,
+            top: particle.top,
+            animationDelay: particle.delay,
+            animationDuration: particle.duration,
+          }"
+        ></span>
+      </div>
 
       <div
         class="container-page relative z-1 grid items-center gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(420px,0.78fr)] xl:gap-16"
@@ -350,6 +443,12 @@ onBeforeUnmount(() => {
 
           <p class="mt-4 max-w-xl text-base leading-7 text-muted md:mt-5 md:text-lg">
             {{ portfolioData.identity.subheading }}
+          </p>
+
+          <p class="mt-4 max-w-xl text-sm leading-7 text-body">
+            <span class="font-semibold text-display">Cyber Shield Labs</span> is the personal
+            cybersecurity platform and lab ecosystem behind my case files, dashboards, detections,
+            and investigation workflows.
           </p>
 
           <p class="mt-5 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm text-muted md:mt-6">
@@ -439,11 +538,11 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="min-w-0 lg:pt-4">
-          <RevealOnScroll :delay="120" class="soc-dashboard">
+          <RevealOnScroll :delay="120" class="soc-dashboard hero-dashboard-card">
             <div class="flex items-center justify-between border-b border-border px-4 py-3">
               <div>
                 <p class="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-                  SOC Status
+                  Cyber Shield Platform
                 </p>
                 <h2 class="mt-1 text-xl font-bold text-display">Cyber Shield Labs</h2>
               </div>
@@ -458,16 +557,17 @@ onBeforeUnmount(() => {
                 <img
                   :src="featuredProject.image"
                   :alt="`${featuredProject.title} preview`"
-                  class="aspect-[16/9] w-full object-cover saturate-[1.08]"
+                  class="hero-dashboard-image aspect-[16/9] w-full object-cover saturate-[1.08]"
                 />
                 <div
                   class="absolute inset-0 bg-gradient-to-t from-background via-background/35 to-transparent"
                 ></div>
+                <div class="dashboard-scanline" aria-hidden="true"></div>
                 <div class="absolute bottom-4 left-4 right-4">
                   <p class="text-xs font-semibold uppercase tracking-[0.12em] text-brand">
-                    Flagship System
+                    Cyber Shield Checker
                   </p>
-                  <h3 class="mt-1 text-2xl font-bold text-display">{{ featuredProject.title }}</h3>
+                  <h3 class="mt-1 text-2xl font-bold text-display">Security command workspace</h3>
                 </div>
               </div>
 
@@ -696,13 +796,16 @@ onBeforeUnmount(() => {
         <RevealOnScroll>
           <p class="section-kicker"><span class="section-index">02</span>Case Files</p>
           <h2 class="section-title mt-4">Case Files</h2>
-          <p class="section-copy mt-4">A SOC monitoring project for alerts, evidence, and cases.</p>
+          <p class="section-copy mt-4">
+            Cyber Shield Labs presents Cyber Shield Checker as a cybersecurity platform ecosystem
+            for alerts, evidence, dashboards, and analyst casework.
+          </p>
         </RevealOnScroll>
 
         <RevealOnScroll class="spotlight-ring mt-12" :delay="80">
           <div class="card grid gap-0 overflow-hidden lg:grid-cols-[0.86fr_1.14fr]">
             <div class="p-6 md:p-10">
-              <span class="badge">FLAGSHIP PROJECT</span>
+              <span class="badge">CYBER SHIELD PLATFORM</span>
               <h3 class="mt-6 text-3xl font-bold leading-tight text-display md:text-5xl">
                 {{ featuredProject.title }}
               </h3>
@@ -714,7 +817,7 @@ onBeforeUnmount(() => {
                 <div
                   v-for="(step, index) in flagshipWorkflow"
                   :key="step.label"
-                  class="group grid gap-3 rounded-[12px] border border-border bg-surface-raised p-4 sm:grid-cols-[auto_1fr_auto] sm:items-center"
+                  class="architecture-step group grid gap-3 rounded-[12px] border border-border bg-surface-raised p-4 sm:grid-cols-[auto_1fr_auto] sm:items-center"
                 >
                   <div
                     class="flex h-10 w-10 items-center justify-center rounded-[10px] bg-brand-soft text-brand transition-transform duration-300 group-hover:scale-105"
@@ -914,6 +1017,149 @@ onBeforeUnmount(() => {
             </div>
           </div>
         </RevealOnScroll>
+
+        <RevealOnScroll class="mt-14" :delay="120">
+          <div class="product-showcase">
+            <div class="product-showcase-grid">
+              <div class="p-6 md:p-8">
+                <p class="section-kicker">Cyber Shield product showcase</p>
+                <h3 class="mt-4 text-3xl font-bold leading-tight text-display md:text-4xl">
+                  A platform story recruiters can understand in seconds.
+                </h3>
+                <p class="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">
+                  Instead of presenting Cyber Shield Checker as only a build, the showcase frames it
+                  like a real SOC product: dashboards, architecture, detection logic, and incident
+                  workflow connected in one operating system.
+                </p>
+
+                <div class="mt-7 grid gap-3 sm:grid-cols-2">
+                  <div
+                    v-for="shot in productShowcaseShots"
+                    :key="shot.title"
+                    class="showcase-shot group"
+                  >
+                    <div class="showcase-shot-media">
+                      <img
+                        :src="shot.image"
+                        :alt="shot.label"
+                        class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                        loading="lazy"
+                      />
+                      <div
+                        class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent"
+                      ></div>
+                      <component
+                        :is="shot.icon"
+                        class="absolute right-3 top-3 h-4 w-4 text-brand"
+                      />
+                    </div>
+                    <div class="p-4">
+                      <p class="text-xs font-semibold uppercase tracking-[0.12em] text-brand">
+                        {{ shot.title }}
+                      </p>
+                      <p class="mt-2 text-sm font-semibold text-display">{{ shot.label }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="architecture-map">
+                <div class="mb-6 flex items-center justify-between gap-4">
+                  <div>
+                    <p class="section-kicker text-xs">Interactive architecture</p>
+                    <h4 class="mt-2 text-xl font-bold text-display">Telemetry to investigation</h4>
+                  </div>
+                  <span class="badge">
+                    <span class="status-dot h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                    Live SOC flow
+                  </span>
+                </div>
+
+                <div class="architecture-flow">
+                  <div
+                    v-for="(step, index) in flagshipWorkflow"
+                    :key="step.label"
+                    class="architecture-node group"
+                    :style="{ '--node-delay': `${index * 140}ms` }"
+                  >
+                    <div class="architecture-node-icon">
+                      <component :is="step.icon" class="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p class="text-sm font-bold text-display">{{ step.label }}</p>
+                      <p class="mt-1 text-xs leading-5 text-muted">{{ step.description }}</p>
+                    </div>
+                    <ArrowUpRight
+                      v-if="index < flagshipWorkflow.length - 1"
+                      class="architecture-arrow h-4 w-4 text-brand"
+                    />
+                  </div>
+                </div>
+
+                <div class="mt-6 grid gap-3 sm:grid-cols-3">
+                  <div class="architecture-metric">
+                    <p class="mono text-2xl font-bold text-display">
+                      <AnimatedCounter value="5" />
+                    </p>
+                    <p class="mt-1 text-xs text-muted">Workflow layers</p>
+                  </div>
+                  <div class="architecture-metric">
+                    <p class="mono text-2xl font-bold text-display">
+                      <AnimatedCounter value="3" />
+                    </p>
+                    <p class="mt-1 text-xs text-muted">Telemetry sources</p>
+                  </div>
+                  <div class="architecture-metric">
+                    <p class="mono text-2xl font-bold text-display">
+                      <AnimatedCounter value="24" />
+                    </p>
+                    <p class="mt-1 text-xs text-muted">Analyst actions</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </RevealOnScroll>
+
+        <section class="mt-16" aria-labelledby="lab-snapshots-title">
+          <RevealOnScroll>
+            <p class="section-kicker">Lab Snapshots</p>
+            <div class="mt-4 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+              <h3 id="lab-snapshots-title" class="section-title">
+                Security lab evidence, visualized.
+              </h3>
+              <p class="section-copy">
+                A horizontal gallery of hands-on systems behind Cyber Shield Labs.
+              </p>
+            </div>
+          </RevealOnScroll>
+
+          <div class="lab-gallery mt-9" aria-label="Cybersecurity lab snapshots">
+            <RevealOnScroll
+              v-for="(snapshot, index) in labSnapshots"
+              :key="snapshot.title"
+              :delay="index * 50"
+              class="lab-snapshot group"
+            >
+              <div class="relative overflow-hidden rounded-[12px] border border-border">
+                <img
+                  :src="snapshot.image"
+                  :alt="snapshot.title"
+                  class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-[1.05]"
+                  loading="lazy"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"
+                ></div>
+                <span class="absolute left-3 top-3 tag bg-background/85 backdrop-blur">
+                  {{ snapshot.meta }}
+                </span>
+              </div>
+              <h4 class="mt-4 text-base font-semibold text-display">{{ snapshot.title }}</h4>
+              <p class="mt-2 text-sm leading-6 text-muted">{{ snapshot.summary }}</p>
+            </RevealOnScroll>
+          </div>
+        </section>
 
         <div class="mt-8 grid gap-6 md:grid-cols-3">
           <RevealOnScroll

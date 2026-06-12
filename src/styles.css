@@ -206,7 +206,63 @@
       color-mix(in srgb, var(--accent-cyan) 20%, transparent),
       transparent 34rem
     ),
+    radial-gradient(
+      ellipse at 50% 110%,
+      color-mix(in srgb, var(--accent-mint) 10%, transparent),
+      transparent 34rem
+    ),
     linear-gradient(180deg, #020617 0%, color-mix(in srgb, #020617 94%, #0f172a) 100%);
+}
+
+@utility hero-premium {
+  min-height: clamp(720px, 92vh, 980px);
+}
+
+@utility hero-aurora {
+  position: absolute;
+  inset: -28% -18% 18%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 28%, rgba(56, 189, 248, 0.24), transparent 28%),
+    radial-gradient(circle at 78% 18%, rgba(16, 185, 129, 0.16), transparent 24%),
+    radial-gradient(circle at 48% 58%, rgba(96, 165, 250, 0.16), transparent 30%);
+  filter: blur(30px) saturate(1.2);
+  opacity: 0.86;
+  animation: aurora-drift 16s ease-in-out infinite alternate;
+}
+
+@utility hero-spotlight {
+  position: fixed;
+  z-index: 0;
+  width: 44rem;
+  height: 44rem;
+  pointer-events: none;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, rgba(125, 211, 252, 0.12), transparent 62%);
+  opacity: 0.9;
+  transform: translate(calc(var(--cursor-x, -999px) - 50%), calc(var(--cursor-y, -999px) - 50%));
+  transition: transform 0.12s linear;
+  mix-blend-mode: screen;
+}
+
+@utility particle-field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+@utility hero-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--accent-cyan) 70%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent-cyan) 50%, transparent);
+  opacity: 0.22;
+  animation: particle-float 8s ease-in-out infinite;
 }
 
 @utility network-pattern {
@@ -256,6 +312,30 @@
     0 28px 90px rgba(2, 6, 23, 0.5),
     0 0 0 1px rgba(56, 189, 248, 0.08);
   backdrop-filter: blur(20px);
+}
+
+@utility hero-dashboard-card {
+  transform-style: preserve-3d;
+  animation: dashboard-float 7s ease-in-out infinite;
+}
+
+@utility hero-dashboard-image {
+  transform-origin: center;
+  animation: dashboard-breathe 8s ease-in-out infinite;
+}
+
+@utility dashboard-scanline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(125, 211, 252, 0.13),
+    transparent
+  );
+  transform: translateY(-100%);
+  animation: scanline 4.8s ease-in-out infinite;
 }
 
 @utility threat-feed {
@@ -420,6 +500,148 @@
     transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1),
     border-color 0.2s ease,
     box-shadow 0.2s ease;
+}
+
+@utility product-showcase {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--brand) 24%, var(--border));
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      circle at 22% 14%,
+      color-mix(in srgb, var(--brand) 12%, transparent),
+      transparent 24rem
+    ),
+    radial-gradient(
+      circle at 82% 80%,
+      color-mix(in srgb, var(--accent-cyan) 12%, transparent),
+      transparent 24rem
+    ),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 82%, transparent), transparent),
+    var(--card);
+  box-shadow: var(--shadow-lg);
+}
+
+@utility product-showcase-grid {
+  display: grid;
+  gap: 0;
+}
+
+@utility showcase-shot {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--surface-raised) 82%, transparent);
+  transition:
+    transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+@utility showcase-shot-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+@utility architecture-map {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  background:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--border) 52%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--border) 52%, transparent) 1px,
+      transparent 1px
+    ),
+    color-mix(in srgb, var(--surface-raised) 72%, transparent);
+  background-size: 28px 28px;
+  padding: 1.5rem;
+}
+
+@utility architecture-flow {
+  position: relative;
+  display: grid;
+  gap: 0.85rem;
+}
+
+@utility architecture-node {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 72%, transparent), transparent),
+    color-mix(in srgb, var(--card) 90%, transparent);
+  padding: 1rem;
+  box-shadow: var(--shadow-xs);
+  transition:
+    transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.22s ease,
+    background-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+@utility architecture-node-icon {
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--brand) 30%, var(--border));
+  border-radius: var(--radius-sm);
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+@utility architecture-arrow {
+  transform: rotate(90deg);
+  transition: transform 0.22s ease;
+}
+
+@utility architecture-metric {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  padding: 1rem;
+}
+
+@utility lab-gallery {
+  display: grid;
+  grid-auto-columns: minmax(17.5rem, 24rem);
+  grid-auto-flow: column;
+  gap: 1rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding: 0.25rem 0.25rem 1rem;
+  scroll-snap-type: inline mandatory;
+}
+
+@utility lab-snapshot {
+  scroll-snap-align: start;
+  min-height: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 76%, transparent), transparent),
+    var(--card);
+  padding: 0.75rem 0.75rem 1rem;
+  box-shadow: var(--shadow-xs);
+  transition:
+    transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 @utility surface-panel {
@@ -781,6 +1003,10 @@
     flex-direction: row;
     align-items: stretch;
   }
+
+  .architecture-map {
+    padding: 2rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -807,6 +1033,15 @@
 
   .journey-icon {
     grid-row: auto;
+  }
+
+  .product-showcase-grid {
+    grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+  }
+
+  .architecture-map {
+    border-left: 1px solid var(--border);
+    border-top: 0;
   }
 }
 
@@ -857,6 +1092,43 @@
 .premium-card:hover::before,
 .glow-border:hover::before {
   opacity: 1;
+}
+
+.showcase-shot:hover,
+.architecture-node:hover,
+.lab-snapshot:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--brand) 34%, var(--border));
+  box-shadow:
+    0 20px 42px color-mix(in srgb, var(--brand) 12%, transparent),
+    var(--shadow-md);
+}
+
+.architecture-node:hover {
+  background: color-mix(in srgb, var(--brand-soft) 42%, var(--card));
+}
+
+.architecture-node:hover .architecture-arrow {
+  transform: rotate(90deg) translateX(3px);
+}
+
+.architecture-step:hover {
+  border-color: color-mix(in srgb, var(--brand) 34%, var(--border));
+  background: color-mix(in srgb, var(--brand-soft) 36%, var(--surface-raised));
+}
+
+.lab-gallery::-webkit-scrollbar {
+  height: 8px;
+}
+
+.lab-gallery::-webkit-scrollbar-track {
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--surface-raised) 74%, transparent);
+}
+
+.lab-gallery::-webkit-scrollbar-thumb {
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--brand) 32%, transparent);
 }
 
 .nav-link::after {
@@ -1038,6 +1310,72 @@
 @keyframes spin-gradient {
   to {
     --angle: 360deg;
+  }
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(-1%, -1%, 0) rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: translate3d(2%, 1%, 0) rotate(4deg) scale(1.04);
+  }
+
+  100% {
+    transform: translate3d(-2%, 2%, 0) rotate(-3deg) scale(1.02);
+  }
+}
+
+@keyframes particle-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.16;
+  }
+
+  50% {
+    transform: translate3d(16px, -24px, 0) scale(1.55);
+    opacity: 0.42;
+  }
+}
+
+@keyframes dashboard-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
+  }
+
+  50% {
+    transform: translate3d(0, -8px, 0) rotateX(0.7deg) rotateY(-0.7deg);
+  }
+}
+
+@keyframes dashboard-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.025);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  20%,
+  55% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
   }
 }
 
