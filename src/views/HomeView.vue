@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import {
-  ArrowUpRight,
   Award,
-  BarChart3,
   BookOpenCheck,
-  CheckCircle2,
   Code2,
   Cpu,
-  Database,
   Download,
   ExternalLink,
-  Eye,
-  FileSearch,
   Github,
   GraduationCap,
   Linkedin,
@@ -24,8 +18,6 @@ import {
   Terminal,
   Trophy,
   UserCheck,
-  Users,
-  Workflow,
 } from "lucide-vue-next";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
@@ -33,229 +25,119 @@ import Navbar from "@/components/layout/Navbar.vue";
 import RevealOnScroll from "@/components/layout/RevealOnScroll.vue";
 import AnimatedCounter from "@/components/ui/AnimatedCounter.vue";
 import { featuredProject, portfolioData } from "@/data/portfolio";
-import type { Project } from "@/types/portfolio";
-
-const supportingProjects = computed(() =>
-  portfolioData.projects.filter((project) => project.id !== featuredProject.id).slice(0, 3),
-);
-
-const cyberTags = ["SOC", "IDS", "Detection", "Incident Response", "Network", "Cyber"];
-const isCyberProject = (project: Project) => project.tags.some((tag) => cyberTags.includes(tag));
 
 const trustCards = [
-  { label: "4th Year Student", icon: GraduationCap },
   { label: "Computer Science", icon: Cpu },
-  { label: "Phnom Penh, Cambodia", icon: MapPin },
-  { label: "Available for Internship", icon: UserCheck },
+  { label: "SOC Focus", icon: ShieldCheck },
+  { label: "Phnom Penh", icon: MapPin },
+  { label: "Internship Ready", icon: UserCheck },
 ];
 
 const heroStats = [
   {
-    label: "Security Projects",
-    value: String(portfolioData.projects.length),
-    detail: "Case files",
+    label: "Projects",
+    value: "2",
+    detail: "SOC focused",
   },
-  {
-    label: "Certifications",
-    value: String(portfolioData.certifications.length),
-    detail: "Verified study",
-  },
-  { label: "SOC Labs", value: String(portfolioData.labs.length), detail: "Hands-on systems" },
-  { label: "Readiness", value: "Ready", detail: "Internship focus" },
-];
-
-const terminalLines = [
-  { text: "$ tail -f /var/log/soc/activity.log", tone: "muted" },
-  { text: "[INFO] pfSense ruleset loaded — 42 rules active", tone: "body" },
-  { text: "[ALERT] Snort IDS: possible port scan detected", tone: "alert" },
-  { text: "[OK] Case opened — INC-2026-0142 assigned", tone: "ok" },
-  { text: "[INFO] Splunk indexing 3 log sources", tone: "body" },
-];
-
-const alertStream = [
-  { label: "Failed login spike", severity: "High" },
-  { label: "Blocked firewall traffic", severity: "Medium" },
-  { label: "Snort IDS alert", severity: "High" },
-  { label: "Incident note added", severity: "Info" },
-];
-
-const heroParticles = Array.from({ length: 22 }, (_, index) => ({
-  id: index,
-  left: `${6 + ((index * 17) % 88)}%`,
-  top: `${10 + ((index * 23) % 76)}%`,
-  delay: `${(index % 8) * 0.55}s`,
-  duration: `${7 + (index % 5)}s`,
-}));
-
-const coverageBars = [
-  { label: "Authentication", value: 92 },
-  { label: "Firewall", value: 85 },
-  { label: "IDS / IPS", value: 78 },
-];
-
-const socDashboardStats = [
-  { label: "Threat Score", value: "92", detail: "Elevated watch" },
-  { label: "Projects", value: String(portfolioData.projects.length), detail: "Security builds" },
   {
     label: "Certificates",
     value: String(portfolioData.certifications.length),
-    detail: "Training proof",
+    detail: "Cyber training",
   },
+  { label: "Core Stack", value: "SOC", detail: "SIEM + IR" },
+  { label: "Status", value: "Open", detail: "Internship" },
 ];
 
-const threatFeed = [
-  "[10:42] Firewall blocked suspicious IP",
-  "[10:43] Failed login detected",
-  "[10:45] Port scan identified",
-  "[10:47] Alert escalated",
-  "[10:48] Incident resolved",
+const alertStream = [
+  { label: "Log analysis", severity: "SIEM" },
+  { label: "Alert triage", severity: "SOC" },
+  { label: "MITRE mapping", severity: "ATT&CK" },
+  { label: "Incident notes", severity: "IR" },
 ];
 
-const missionLearning = [
+const flagshipStats = [
+  { label: "Focus", value: "SOC", detail: "Monitoring" },
+  { label: "Tools", value: "6+", detail: "Lab stack" },
+  { label: "Goal", value: "IR", detail: "Response" },
+];
+
+const techMarquee = [
   "Splunk SIEM",
-  "Detection Engineering",
-  "Threat Hunting",
+  "MITRE ATT&CK",
   "Incident Response",
+  "Log Analysis",
+  "Linux",
+  "NestJS",
+  "PostgreSQL",
+  "Wireshark",
 ];
 
-const securityJourney = [
-  { label: "Computer Science", icon: Cpu },
-  { label: "Networking", icon: RadioTower },
-  { label: "Linux", icon: Terminal },
-  { label: "Cybersecurity", icon: ShieldCheck },
-  { label: "SOC Monitoring", icon: FileSearch },
-  { label: "Cyber Shield Checker", icon: Workflow },
-  { label: "IT Security Internship", icon: UserCheck },
-];
-
-const flagshipWorkflow = [
-  { label: "Firewall Logs", description: "pfSense, auth, IDS events", icon: RadioTower },
-  { label: "Detection Engine", description: "Rules, searches, severity", icon: ShieldCheck },
-  { label: "Alert Correlation", description: "Evidence and context", icon: Terminal },
-  { label: "Incident Dashboard", description: "Triage, notes, handoff", icon: BarChart3 },
-  { label: "Investigation Workflow", description: "Evidence, owners, closure", icon: CheckCircle2 },
-];
-
-const productShowcaseShots = [
+const projectItems = [
   {
-    title: "Product screenshots",
-    label: "Cyber Shield command center",
-    image: featuredProject.image,
-    icon: Eye,
-  },
-  {
-    title: "Dashboard screenshots",
-    label: "SOC overview and severity trends",
-    image: portfolioData.labSystems[0].image,
-    icon: BarChart3,
-  },
-  {
-    title: "Architecture diagrams",
-    label: "Telemetry to incident pipeline",
-    image: portfolioData.labSystems[1].image,
-    icon: Database,
-  },
-  {
-    title: "Workflow diagrams",
-    label: "Triage, evidence, and handoff",
-    image: portfolioData.labSystems[2].image,
-    icon: Workflow,
-  },
-];
-
-const labSnapshots = [
-  {
-    title: "Splunk dashboards",
-    summary: "SIEM views for alert volume, source activity, and timeline review.",
-    image: portfolioData.labSystems[0].image,
-    meta: "SIEM",
-  },
-  {
-    title: "Kali Linux labs",
-    summary: "Controlled validation traffic and analyst tooling in an isolated lab.",
-    image: portfolioData.labSystems[4].image,
-    meta: "Testing",
-  },
-  {
-    title: "Wireshark analysis",
-    summary: "Packet evidence used to confirm suspicious traffic behavior.",
-    image: portfolioData.projects.find((project) => project.id === "snort-ids-rules")?.image,
-    meta: "PCAP",
-  },
-  {
-    title: "Snort alerts",
-    summary: "IDS rule output reviewed for severity, signal quality, and context.",
-    image: portfolioData.labSystems[2].image,
-    meta: "IDS",
-  },
-  {
-    title: "pfSense configuration",
-    summary: "Firewall policy and network boundary decisions documented for review.",
-    image: portfolioData.labSystems[1].image,
-    meta: "Firewall",
-  },
-  {
-    title: "SOC investigations",
-    summary: "Case notes, evidence, and next action thinking from lab incidents.",
-    image: featuredProject.image,
-    meta: "IR",
-  },
-];
-
-const skillGroups = [
-  {
-    title: "Cybersecurity & SOC",
-    description: "Detection & response",
+    title: "Cyber Shield Checker",
+    year: "2026",
     icon: ShieldCheck,
-    skills: [
-      "SIEM (Splunk)",
-      "Log Analysis",
-      "Threat Hunting",
-      "Incident Response",
-      "MITRE ATT&CK",
-      "IOC Tracking",
+    summary: "A SOC monitoring and incident management platform for alerts, cases, and analyst workflows.",
+    stack: ["NestJS", "PostgreSQL", "Linux", "MITRE ATT&CK", "IOC Tracking"],
+    highlights: [
+      "Alert generation and incident reporting",
+      "MITRE ATT&CK mapping and IOC tracking",
+      "Centralized case management",
     ],
   },
   {
-    title: "Networking",
-    description: "Traffic & defense",
-    icon: RadioTower,
-    skills: ["TCP/IP", "Subnetting", "VLANs", "Routing", "pfSense", "Wireshark"],
-  },
-  {
-    title: "Tools",
-    description: "Lab & analysis",
+    title: "SOC Analyst Lab",
+    year: "2026",
     icon: Terminal,
-    skills: ["Snort", "Nmap", "Kali Linux", "Linux Admin", "Cisco Packet Tracer", "Git"],
+    summary: "A hands-on lab for practicing SIEM searches, alert investigation, and incident response scenarios.",
+    stack: ["Splunk SIEM", "MITRE ATT&CK", "Threat Hunting", "Incident Response"],
+    highlights: [
+      "Security event and log analysis",
+      "Threat hunting methodology",
+      "Simulated response procedures",
+    ],
+  },
+];
+
+const coreStrengths = [
+  {
+    title: "SOC Monitoring",
+    detail: "Reading logs, identifying suspicious activity, and turning alerts into notes.",
+    icon: ShieldCheck,
   },
   {
-    title: "Programming / Development",
-    description: "Building & securing apps",
+    title: "Incident Response",
+    detail: "Following investigation steps, documenting evidence, and practicing response flow.",
+    icon: Terminal,
+  },
+  {
+    title: "Security Engineering",
+    detail: "Building backend and database features for alerts, incidents, and case tracking.",
+    icon: Code2,
+  },
+];
+
+const skillMatrix = [
+  {
+    title: "Security Operations",
+    icon: ShieldCheck,
+    skills: ["SOC Monitoring", "Log Analysis", "Alert Triage", "Incident Response", "MITRE ATT&CK"],
+  },
+  {
+    title: "Networking & Systems",
+    icon: RadioTower,
+    skills: ["TCP/IP", "Subnetting", "VLANs", "Routing", "Linux Administration"],
+  },
+  {
+    title: "Tools & Platforms",
+    icon: Terminal,
+    skills: ["Splunk SIEM", "pfSense", "Wireshark", "Nmap", "Kali Linux"],
+  },
+  {
+    title: "Development",
     icon: Code2,
     skills: ["Python", "JavaScript", "Vue.js", "NestJS", "Laravel", "PostgreSQL"],
   },
-  {
-    title: "Soft Skills",
-    description: "Analyst mindset",
-    icon: Users,
-    skills: [
-      "Analytical Thinking",
-      "Problem-Solving",
-      "Documentation",
-      "Teamwork",
-      "Communication",
-    ],
-  },
-];
-
-const skillAccents = ["var(--brand)", "var(--accent-cyan)", "var(--accent-mint)"];
-
-const educationTimeline = [
-  { year: "2022", title: "Started Computer Science" },
-  { year: "2023", title: "Networking and Linux Foundations" },
-  { year: "2024", title: "Cybersecurity Fundamentals" },
-  { year: "2025", title: "SOC and Security Monitoring" },
-  { year: "2026", title: "Building Security Projects and Internship Preparation" },
 ];
 
 const achievements = [
@@ -271,7 +153,7 @@ const achievements = [
   },
   {
     title: "Cybersecurity Labs Completed",
-    description: "Splunk, pfSense, Snort, and Linux practice.",
+    description: "Splunk, pfSense, Wireshark, and Linux practice.",
     icon: BookOpenCheck,
   },
   {
@@ -312,45 +194,6 @@ const contactLinks = [
     icon: Send,
   },
 ];
-
-const certificationDetails: Record<
-  string,
-  {
-    category: string;
-    skills: string[];
-  }
-> = {
-  "google-cyber-cert": {
-    category: "Security Foundations",
-    skills: ["Incident response", "Linux", "SQL"],
-  },
-  "soc-analyst": {
-    category: "SOC Operations",
-    skills: ["Alert triage", "SIEM workflow", "Reporting"],
-  },
-  "network-research": {
-    category: "Network Security",
-    skills: ["Traffic analysis", "Research", "Documentation"],
-  },
-  "linux-fundamentals": {
-    category: "Systems",
-    skills: ["Shell", "Permissions", "Administration"],
-  },
-  "python-fundamentals": {
-    category: "Programming",
-    skills: ["Scripting", "Logic", "Automation basics"],
-  },
-  "intro-cyber": {
-    category: "Cyber Basics",
-    skills: ["CIA triad", "Threats", "Security mindset"],
-  },
-};
-
-const getCertificationDetails = (id: string) =>
-  certificationDetails[id] ?? {
-    category: "Training",
-    skills: ["Security fundamentals"],
-  };
 
 const heroRoles = [
   "SOC Analyst Aspirant",
@@ -397,65 +240,37 @@ onBeforeUnmount(() => {
 
     <Navbar />
 
-    <section
-      id="home"
-      class="hero-lab hero-premium relative scroll-mt-24 overflow-hidden border-b border-border pb-12 pt-28 md:pb-16 md:pt-32 xl:pt-32"
-    >
-      <div class="hero-aurora" aria-hidden="true"></div>
-      <div class="grid-fade" aria-hidden="true"></div>
-      <div class="hero-spotlight" aria-hidden="true"></div>
-      <div class="network-pattern" aria-hidden="true"></div>
-      <div class="particle-field" aria-hidden="true">
-        <span
-          v-for="particle in heroParticles"
-          :key="particle.id"
-          class="hero-particle"
-          :style="{
-            left: particle.left,
-            top: particle.top,
-            animationDelay: particle.delay,
-            animationDuration: particle.duration,
-          }"
-        ></span>
-      </div>
-
+    <section id="home" class="hero-section relative scroll-mt-24 overflow-hidden border-b border-border pb-14 pt-28 md:pb-20 md:pt-32">
+      <div class="hero-grid" aria-hidden="true"></div>
       <div
-        class="container-page relative z-1 grid items-center gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(420px,0.78fr)] xl:gap-16"
+        class="container-page relative z-1 grid items-center gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(390px,0.78fr)] xl:gap-14"
       >
         <div class="animate-reveal-up max-w-2xl">
           <div
-            class="inline-flex items-center gap-2 rounded-[8px] border border-brand/25 bg-brand-soft px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-brand"
+            class="hero-pill inline-flex items-center gap-2 rounded-[6px] border border-brand/25 px-3 py-1.5 text-xs font-semibold uppercase text-brand"
           >
             <span class="status-dot h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
             Cyber Shield Labs · by Peng Seyha
           </div>
 
-          <p class="mono mt-5 text-sm font-medium text-muted">
-            Hi, I&apos;m <span class="text-display">Peng Seyha</span>
-            <span class="blink-cursor"></span>
-          </p>
+          <p class="mono mt-5 text-sm font-medium text-muted">Hi, I&apos;m Peng Seyha.</p>
 
           <h1
-            class="mt-4 max-w-3xl text-4xl font-extrabold leading-[1.08] tracking-[-0.02em] text-display sm:text-5xl xl:text-6xl"
+            class="mt-4 max-w-3xl text-4xl font-extrabold leading-[1.08] text-display sm:text-5xl xl:text-6xl"
           >
-            <span class="text-display">{{ portfolioData.identity.headline }}</span>
+            SOC analyst aspirant building practical security labs.
           </h1>
 
           <p class="mt-4 max-w-xl text-base leading-7 text-muted md:mt-5 md:text-lg">
-            {{ portfolioData.identity.subheading }}
-          </p>
-
-          <p class="mt-4 max-w-xl text-sm leading-7 text-body">
-            <span class="font-semibold text-display">Cyber Shield Labs</span> is the personal
-            cybersecurity platform and lab ecosystem behind my case files, dashboards, detections,
-            and investigation workflows.
+            I turn classroom fundamentals into hands-on SOC projects: monitoring, log analysis,
+            incident tracking, and clear investigation notes.
           </p>
 
           <p class="mt-5 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm text-muted md:mt-6">
             <Transition name="role" mode="out-in">
               <span
                 :key="displayedRole"
-                class="mono inline-flex min-h-7 items-center rounded-[8px] border border-brand/25 bg-brand-soft px-2.5 text-brand"
+                class="mono inline-flex min-h-7 items-center rounded-[6px] border border-brand/25 bg-brand-soft px-2.5 text-brand"
               >
                 {{ displayedRole }}
               </span>
@@ -467,27 +282,9 @@ onBeforeUnmount(() => {
             </span>
           </p>
 
-          <div
-            class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[12px] border border-border bg-border md:mt-7 md:grid-cols-4"
-          >
-            <div
-              v-for="stat in heroStats"
-              :key="stat.label"
-              class="bg-surface/70 px-3 py-3 sm:px-4"
-            >
-              <p class="mono text-xl font-bold text-display sm:text-2xl">
-                <AnimatedCounter :value="stat.value" />
-              </p>
-              <p class="mt-1 text-[11px] uppercase tracking-[0.08em] text-muted sm:text-xs">
-                {{ stat.label }}
-              </p>
-              <p class="mt-1 text-[11px] text-muted/80">{{ stat.detail }}</p>
-            </div>
-          </div>
-
           <div class="mt-7 flex flex-col gap-3 sm:flex-row md:mt-9">
             <a href="#projects" class="button-primary w-full sm:w-auto">
-              View Case Files
+              View Projects
               <ExternalLink class="h-4 w-4" />
             </a>
             <a :href="portfolioData.contact.resumeUrl" class="button-secondary w-full sm:w-auto">
@@ -496,55 +293,27 @@ onBeforeUnmount(() => {
             </a>
           </div>
 
-          <div
-            class="mt-6 grid gap-3 rounded-[14px] border border-border bg-surface/70 p-4 lg:hidden"
-          >
-            <div class="flex items-center justify-between gap-3">
-              <p class="text-xs font-semibold uppercase tracking-[0.14em] text-brand">SOC Status</p>
-              <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-display">
-                <span class="status-dot h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-                Active
-              </span>
+          <div class="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4 md:mt-9">
+            <div v-for="stat in heroStats" :key="stat.label" class="hero-stat">
+              <p class="mono text-xl font-bold text-display sm:text-2xl">
+                <AnimatedCounter :value="stat.value" />
+              </p>
+              <p class="mt-1 text-[11px] uppercase text-muted sm:text-xs">
+                {{ stat.label }}
+              </p>
+              <p class="mt-1 text-[11px] text-muted/80">{{ stat.detail }}</p>
             </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div class="rounded-[10px] border border-border bg-surface-raised p-3">
-                <p class="text-[11px] uppercase tracking-[0.1em] text-muted">Threat Score</p>
-                <p class="mono mt-1 text-2xl font-bold text-display">
-                  <AnimatedCounter value="92" />
-                </p>
-              </div>
-              <div class="rounded-[10px] border border-border bg-surface-raised p-3">
-                <p class="text-[11px] uppercase tracking-[0.1em] text-muted">Current Focus</p>
-                <p class="mt-1 text-sm font-semibold text-display">Threat Detection</p>
-              </div>
-            </div>
-            <p class="text-xs leading-5 text-muted">
-              Recent Event:
-              <span class="font-semibold text-display">Firewall blocked suspicious connection</span>
-            </p>
           </div>
-
-          <p class="mt-8 text-xs font-medium uppercase tracking-[0.16em] text-muted md:mt-10">
-            Lab stack
-          </p>
-          <p class="mt-3 text-sm leading-7 text-body">
-            <span
-              v-for="(tag, index) in ['Splunk', 'pfSense', 'Snort', 'Linux', 'NestJS', 'Vue']"
-              :key="tag"
-            >
-              {{ tag }}<span v-if="index < 5" class="px-1.5 text-border">/</span>
-            </span>
-          </p>
         </div>
 
         <div class="min-w-0 lg:pt-4">
-          <RevealOnScroll :delay="120" class="soc-dashboard hero-dashboard-card">
+          <RevealOnScroll :delay="120" class="hero-visual hero-command motion-card">
             <div class="flex items-center justify-between border-b border-border px-4 py-3">
               <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-                  Cyber Shield Platform
+                <p class="text-xs font-semibold uppercase text-brand">
+                  Analyst Workspace
                 </p>
-                <h2 class="mt-1 text-xl font-bold text-display">Cyber Shield Labs</h2>
+                <h2 class="mt-1 text-xl font-bold text-display">Cyber Shield Checker</h2>
               </div>
               <span class="badge">
                 <span class="status-dot h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
@@ -553,31 +322,27 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="grid gap-4 p-4">
-              <div class="relative overflow-hidden rounded-[14px] border border-border">
+              <div class="relative overflow-hidden rounded-[8px] border border-border">
                 <img
                   :src="featuredProject.image"
                   :alt="`${featuredProject.title} preview`"
-                  class="hero-dashboard-image aspect-[16/9] w-full object-cover saturate-[1.08]"
+                  class="aspect-[16/9] w-full object-cover"
                 />
                 <div
                   class="absolute inset-0 bg-gradient-to-t from-background via-background/35 to-transparent"
                 ></div>
-                <div class="dashboard-scanline" aria-hidden="true"></div>
+                <div class="scan-line" aria-hidden="true"></div>
                 <div class="absolute bottom-4 left-4 right-4">
-                  <p class="text-xs font-semibold uppercase tracking-[0.12em] text-brand">
-                    Cyber Shield Checker
+                  <p class="text-xs font-semibold uppercase text-brand">
+                    Featured Build
                   </p>
-                  <h3 class="mt-1 text-2xl font-bold text-display">Security command workspace</h3>
+                  <h3 class="mt-1 text-2xl font-bold text-display">Alerts to incident notes</h3>
                 </div>
               </div>
 
               <div class="grid grid-cols-3 gap-3">
-                <div
-                  v-for="stat in socDashboardStats"
-                  :key="stat.label"
-                  class="rounded-[10px] border border-border bg-surface-raised p-3"
-                >
-                  <p class="text-[11px] uppercase tracking-[0.1em] text-muted">{{ stat.label }}</p>
+                <div v-for="stat in flagshipStats" :key="stat.label" class="stat-tile">
+                  <p class="text-[11px] uppercase text-muted">{{ stat.label }}</p>
                   <p class="mono mt-1 text-2xl font-bold text-display">
                     <AnimatedCounter :value="stat.value" />
                   </p>
@@ -585,45 +350,28 @@ onBeforeUnmount(() => {
                 </div>
               </div>
 
-              <div class="grid gap-3 sm:grid-cols-2">
-                <div class="rounded-[10px] border border-border bg-surface-raised p-4">
-                  <p class="text-xs font-medium uppercase tracking-[0.1em] text-muted">
-                    Current Focus
-                  </p>
-                  <p class="mt-2 text-lg font-semibold text-display">Threat Detection</p>
-                </div>
-                <div class="rounded-[10px] border border-border bg-surface-raised p-4">
-                  <p class="text-xs font-medium uppercase tracking-[0.1em] text-muted">
-                    Recent Event
-                  </p>
-                  <p class="mt-2 text-sm font-semibold leading-6 text-display">
-                    Firewall blocked suspicious connection
-                  </p>
-                </div>
-              </div>
-
-              <div class="rounded-[10px] border border-border bg-background/45 p-4">
+              <div class="surface-panel p-4">
                 <div class="mb-3 flex items-center justify-between">
-                  <p class="text-xs font-medium uppercase tracking-[0.1em] text-muted">
-                    Signal Console
+                  <p class="text-xs font-medium uppercase text-muted">
+                    What I practice
                   </p>
-                  <span class="mono text-xs text-brand">live</span>
+                  <span class="inline-flex items-center gap-1.5 text-xs font-medium text-brand">
+                    <span class="status-dot h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                    Live
+                  </span>
                 </div>
-                <div class="mono space-y-2 text-xs leading-6">
-                  <p
-                    v-for="(line, index) in terminalLines.slice(1, 5)"
-                    :key="line.text"
-                    class="animate-reveal-up truncate"
-                    :class="{
-                      'text-muted': line.tone === 'muted',
-                      'text-body': line.tone === 'body',
-                      'text-amber-500': line.tone === 'alert',
-                      'text-emerald-500': line.tone === 'ok',
-                    }"
-                    :style="{ animationDelay: `${300 + index * 180}ms` }"
+                <div class="space-y-2">
+                  <div
+                    v-for="(item, index) in alertStream"
+                    :key="item.label"
+                    class="flex items-center justify-between rounded-[6px] border px-3 py-2.5 transition-colors duration-300"
+                    :class="
+                      index === activeAlertIndex ? 'border-brand/30 bg-brand-soft' : 'border-border'
+                    "
                   >
-                    {{ line.text }}
-                  </p>
+                    <span class="text-sm text-body">{{ item.label }}</span>
+                    <span class="tag text-[11px]">{{ item.severity }}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -632,12 +380,20 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="container-page relative z-1 mt-10">
-        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="tech-marquee" aria-label="Core technologies">
+          <div class="tech-marquee-track">
+            <span v-for="(tech, index) in [...techMarquee, ...techMarquee]" :key="`${tech}-${index}`">
+              {{ tech }}
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <RevealOnScroll
             v-for="(item, index) in trustCards"
             :key="item.label"
             :delay="index * 50"
-            class="card flex items-center gap-3 px-4 py-3.5"
+            class="surface-panel flex items-center gap-3 px-4 py-3.5"
           >
             <component :is="item.icon" class="h-4.5 w-4.5 shrink-0 text-brand" />
             <p class="text-sm font-medium text-display">{{ item.label }}</p>
@@ -646,588 +402,106 @@ onBeforeUnmount(() => {
       </div>
     </section>
 
-    <section class="relative overflow-hidden border-b border-border py-8 md:py-10">
-      <div class="container-page">
-        <RevealOnScroll class="threat-feed">
-          <div class="flex shrink-0 items-center gap-3 px-4 py-3">
-            <span class="status-dot h-2 w-2 rounded-full bg-emerald-400"></span>
-            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-              Recent Security Activity
-            </p>
-          </div>
-          <div
-            class="min-w-0 flex-1 overflow-hidden border-t border-border md:border-l md:border-t-0"
-          >
-            <div class="threat-feed-track">
-              <span
-                v-for="(item, index) in [...threatFeed, ...threatFeed]"
-                :key="`${item}-${index}`"
-                class="threat-event"
-              >
-                {{ item }}
-              </span>
-            </div>
-          </div>
-        </RevealOnScroll>
-      </div>
-    </section>
-
-    <section class="relative overflow-hidden border-b border-border py-12 md:py-16">
+    <section
+      id="about"
+      class="section-panel scroll-mt-24 border-b border-border py-16 md:py-24"
+    >
       <div class="container-page">
         <RevealOnScroll>
-          <p class="section-kicker">Security Journey</p>
-          <div class="mt-4 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-            <h2 class="section-title">From computer science to SOC readiness.</h2>
-            <p class="section-copy">
-              A practical path through networking, Linux, detection work, and the Cyber Shield
-              Checker flagship build.
-            </p>
-          </div>
-        </RevealOnScroll>
-
-        <div class="journey-map mt-10">
-          <RevealOnScroll
-            v-for="(step, index) in securityJourney"
-            :key="step.label"
-            :delay="index * 60"
-            class="journey-step"
-          >
-            <div class="journey-icon">
-              <component :is="step.icon" class="h-4 w-4" />
-            </div>
-            <p class="mono text-[11px] text-muted">0{{ index + 1 }}</p>
-            <p class="mt-2 text-sm font-semibold text-display">{{ step.label }}</p>
-          </RevealOnScroll>
-        </div>
-      </div>
-    </section>
-
-    <section class="relative overflow-hidden border-b border-border py-10 md:py-14">
-      <div class="container-page">
-        <RevealOnScroll class="card p-5 md:p-6">
-          <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <p class="section-kicker"><span class="section-index">01</span>About Me</p>
+          <div class="mt-4 grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
             <div>
-              <p class="section-kicker">Current Mission</p>
-              <h2 class="mt-3 text-2xl font-bold leading-tight text-display md:text-3xl">
-                Building practical SOC readiness through labs, detections, and analyst workflows.
-              </h2>
-              <p class="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">
-                Goal: Land an IT Security / SOC Internship while turning classroom fundamentals into
-                reviewable security work.
+              <h2 class="section-title">About Me</h2>
+              <p class="section-copy mt-4">
+                I&apos;m a Computer Science student in Phnom Penh focused on SOC monitoring,
+                incident response, and security tooling. I like building small, practical systems
+                that show how alerts become evidence, decisions, and documentation.
               </p>
             </div>
 
-            <div class="grid gap-3 sm:grid-cols-2">
-              <div
-                v-for="(item, index) in missionLearning"
-                :key="item"
-                class="rounded-[10px] border border-border bg-surface-raised p-4"
-              >
-                <p class="mono text-xs text-muted">0{{ index + 1 }}</p>
-                <p class="mt-2 text-sm font-semibold text-display">{{ item }}</p>
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div class="surface-panel p-5">
+                <p class="section-kicker text-xs">Focus</p>
+                <p class="mt-3 text-base font-semibold text-display">
+                  SOC monitoring and incident response
+                </p>
               </div>
-            </div>
-          </div>
-        </RevealOnScroll>
-      </div>
-    </section>
-
-    <section
-      id="skills"
-      class="relative scroll-mt-24 overflow-hidden border-t border-border py-14 md:py-20"
-    >
-      <div class="container-page relative z-1">
-        <RevealOnScroll>
-          <p class="section-kicker"><span class="section-index">01</span>Security Arsenal</p>
-          <div class="mt-4 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-            <h2 class="section-title">Security Arsenal</h2>
-            <p class="section-copy">Security, networking, tools, and development fundamentals.</p>
-          </div>
-        </RevealOnScroll>
-
-        <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <RevealOnScroll
-            v-for="(group, index) in skillGroups"
-            :key="group.title"
-            :delay="index * 70"
-            class="card group p-6"
-          >
-            <div class="flex items-center gap-3">
-              <div
-                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] transition-transform duration-300 group-hover:scale-105"
-                :style="{
-                  backgroundColor: `color-mix(in srgb, ${skillAccents[index % skillAccents.length]} 14%, transparent)`,
-                  color: skillAccents[index % skillAccents.length],
-                }"
-              >
-                <component :is="group.icon" class="h-5 w-5" />
+              <div class="surface-panel p-5">
+                <p class="section-kicker text-xs">Availability</p>
+                <p class="mt-3 text-base font-semibold text-display">
+                  {{ portfolioData.identity.availability }}
+                </p>
               </div>
-              <div>
-                <h3 class="text-base font-semibold text-display">{{ group.title }}</h3>
-                <p class="mt-0.5 text-xs text-muted">
-                  {{ group.description }}
+              <div class="surface-panel p-5">
+                <p class="section-kicker text-xs">Location</p>
+                <p class="mt-3 text-base font-semibold text-display">
+                  {{ portfolioData.identity.location }}
+                </p>
+              </div>
+              <div class="surface-panel p-5">
+                <p class="section-kicker text-xs">Mindset</p>
+                <p class="mt-3 text-base font-semibold text-display">
+                  Practical labs, clear notes, and steady improvement
                 </p>
               </div>
             </div>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span
-                v-for="(skill, skillIndex) in group.skills"
-                :key="skill"
-                class="skill-chip"
-                :style="{ transitionDelay: `${skillIndex * 30}ms` }"
-              >
-                <span
-                  class="skill-chip-dot h-1.5 w-1.5 shrink-0 rounded-full"
-                  :style="{ backgroundColor: skillAccents[index % skillAccents.length] }"
-                ></span>
-                {{ skill }}
-              </span>
-            </div>
-          </RevealOnScroll>
-        </div>
+          </div>
+        </RevealOnScroll>
       </div>
     </section>
 
     <section
       id="projects"
-      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
+      class="scroll-mt-24 border-b border-border py-16 md:py-24"
     >
-      <div class="container-page relative z-1">
+      <div class="container-page">
         <RevealOnScroll>
-          <p class="section-kicker"><span class="section-index">02</span>Case Files</p>
-          <h2 class="section-title mt-4">Case Files</h2>
-          <p class="section-copy mt-4">
-            Cyber Shield Labs presents Cyber Shield Checker as a cybersecurity platform ecosystem
-            for alerts, evidence, dashboards, and analyst casework.
-          </p>
-        </RevealOnScroll>
-
-        <RevealOnScroll class="spotlight-ring mt-12" :delay="80">
-          <div class="card grid gap-0 overflow-hidden lg:grid-cols-[0.86fr_1.14fr]">
-            <div class="p-6 md:p-10">
-              <span class="badge">CYBER SHIELD PLATFORM</span>
-              <h3 class="mt-6 text-3xl font-bold leading-tight text-display md:text-5xl">
-                {{ featuredProject.title }}
-              </h3>
-              <p class="mt-5 text-base leading-8 text-body md:text-lg">
-                {{ featuredProject.summary }}
-              </p>
-
-              <div class="mt-8 grid gap-3">
-                <div
-                  v-for="(step, index) in flagshipWorkflow"
-                  :key="step.label"
-                  class="architecture-step group grid gap-3 rounded-[12px] border border-border bg-surface-raised p-4 sm:grid-cols-[auto_1fr_auto] sm:items-center"
-                >
-                  <div
-                    class="flex h-10 w-10 items-center justify-center rounded-[10px] bg-brand-soft text-brand transition-transform duration-300 group-hover:scale-105"
-                  >
-                    <component :is="step.icon" class="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p class="text-sm font-semibold text-display">{{ step.label }}</p>
-                    <p class="mt-1 text-xs leading-5 text-muted">{{ step.description }}</p>
-                  </div>
-                  <ArrowUpRight
-                    v-if="index < flagshipWorkflow.length - 1"
-                    class="hidden h-4 w-4 rotate-90 text-muted sm:block"
-                  />
-                </div>
-              </div>
-
-              <div class="mt-8 grid gap-6 md:grid-cols-2">
-                <div>
-                  <p class="section-kicker text-xs">Problem</p>
-                  <p class="mt-3 text-sm leading-6 text-muted">
-                    Too many events become noise without triage and evidence.
-                  </p>
-                </div>
-                <div>
-                  <p class="section-kicker text-xs">Solution</p>
-                  <p class="mt-3 text-sm leading-6 text-muted">
-                    A simple workflow from logs to alerts, cases, and notes.
-                  </p>
-                </div>
-              </div>
-
-              <div class="mt-8">
-                <p class="section-kicker text-xs">Technologies used</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span v-for="tech in featuredProject.stack" :key="tech" class="tag">
-                    {{ tech }}
-                  </span>
-                </div>
-              </div>
-
-              <div class="mt-8">
-                <p class="section-kicker text-xs">Key features</p>
-                <div class="mt-4 grid gap-3 sm:grid-cols-2">
-                  <div
-                    v-for="feature in featuredProject.features.slice(0, 4)"
-                    :key="feature"
-                    class="flex gap-3 rounded-[10px] border border-border bg-surface-raised p-3 text-sm leading-6 text-muted"
-                  >
-                    <CheckCircle2 class="mt-1 h-4 w-4 shrink-0 text-brand" />
-                    <span>{{ feature }}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  v-if="featuredProject.githubUrl"
-                  :href="featuredProject.githubUrl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="button-primary w-full sm:w-auto"
-                >
-                  <Github class="h-4 w-4" />
-                  Review Build
-                </a>
-                <RouterLink
-                  :to="`/projects/${featuredProject.id}`"
-                  class="button-secondary w-full sm:w-auto"
-                >
-                  <BookOpenCheck class="h-4 w-4 text-brand" />
-                  Open Case File
-                </RouterLink>
-                <a
-                  v-if="featuredProject.liveDemoUrl"
-                  :href="featuredProject.liveDemoUrl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="button-secondary w-full sm:w-auto"
-                >
-                  <ExternalLink class="h-4 w-4 text-brand" />
-                  Live Demo
-                </a>
-              </div>
-            </div>
-
-            <div
-              class="border-t border-border bg-surface-raised p-4 sm:p-6 lg:border-l lg:border-t-0"
-            >
-              <div class="overflow-hidden rounded-[14px] border border-border bg-background">
-                <div class="relative aspect-[16/10] overflow-hidden border-b border-border">
-                  <img
-                    :src="featuredProject.image"
-                    :alt="`${featuredProject.title} dashboard preview`"
-                    class="h-full w-full object-cover"
-                  />
-                  <div
-                    class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"
-                  ></div>
-                  <div class="absolute bottom-4 left-4 right-4">
-                    <p class="section-kicker text-xs">Product Preview</p>
-                    <h4 class="mt-2 text-xl font-bold text-display">SOC operations workspace</h4>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-6 flex items-center justify-between">
-                <div>
-                  <p class="section-kicker">SOC dashboard</p>
-                  <h4 class="mt-2 text-lg font-semibold text-display">Security operations view</h4>
-                </div>
-                <RadioTower class="h-5 w-5 text-brand" />
-              </div>
-
-              <div
-                class="mt-5 grid grid-cols-3 divide-x divide-border rounded-[10px] border border-border"
-              >
-                <div v-for="metric in featuredProject.metrics" :key="metric.label" class="p-3.5">
-                  <p class="text-xs text-muted">{{ metric.label }}</p>
-                  <p class="mt-1.5 text-sm font-semibold text-display">{{ metric.value }}</p>
-                </div>
-              </div>
-
-              <div class="mt-5 rounded-[10px] border border-border p-4">
-                <p class="text-xs font-medium uppercase tracking-[0.1em] text-muted">
-                  Detection coverage
-                </p>
-                <div class="mt-3 space-y-3">
-                  <div v-for="bar in coverageBars" :key="bar.label">
-                    <div class="mb-1.5 flex items-center justify-between text-xs">
-                      <span class="font-medium text-display">{{ bar.label }}</span>
-                      <span class="mono text-muted">
-                        <AnimatedCounter :value="`${bar.value}%`" />
-                      </span>
-                    </div>
-                    <div class="severity-track">
-                      <div
-                        class="severity-fill"
-                        :style="{ width: `${bar.value}%` }"
-                        role="progressbar"
-                        :aria-valuenow="bar.value"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                        :aria-label="bar.label"
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-5 grid gap-4 lg:grid-cols-[1fr_0.82fr]">
-                <div class="rounded-[10px] border border-border p-4">
-                  <div class="mb-3 flex items-center justify-between">
-                    <p class="text-xs font-medium uppercase tracking-[0.1em] text-muted">
-                      Alert stream
-                    </p>
-                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-brand">
-                      <span class="status-dot h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-                      Live
-                    </span>
-                  </div>
-                  <div class="space-y-2">
-                    <div
-                      v-for="(item, index) in alertStream"
-                      :key="item.label"
-                      class="flex items-center justify-between rounded-[8px] border px-3 py-2.5 transition-colors duration-300"
-                      :class="
-                        index === activeAlertIndex
-                          ? 'border-brand/30 bg-brand-soft'
-                          : 'border-border'
-                      "
-                    >
-                      <span class="text-sm text-body">{{ item.label }}</span>
-                      <span class="tag text-[11px]">{{ item.severity }}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="rounded-[10px] border border-border p-4">
-                  <p class="text-xs font-medium uppercase tracking-[0.1em] text-muted">Workflow</p>
-                  <div class="mt-3 space-y-2.5">
-                    <div
-                      v-for="(step, index) in ['Collect', 'Detect', 'Triage', 'Document']"
-                      :key="step"
-                      class="flex items-center gap-3"
-                    >
-                      <span
-                        class="flex h-7 w-7 items-center justify-center rounded-[8px] bg-brand-soft text-xs font-semibold text-brand"
-                      >
-                        {{ index + 1 }}
-                      </span>
-                      <span class="text-sm font-medium text-display">{{ step }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <p class="section-kicker"><span class="section-index">02</span>Projects</p>
+          <div class="mt-4 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+            <h2 class="section-title">Featured Projects</h2>
+            <p class="section-copy">Two focused projects showing SOC practice, alert workflow, and security tooling.</p>
           </div>
         </RevealOnScroll>
 
-        <RevealOnScroll class="mt-14" :delay="120">
-          <div class="product-showcase">
-            <div class="product-showcase-grid">
-              <div class="p-6 md:p-8">
-                <p class="section-kicker">Cyber Shield product showcase</p>
-                <h3 class="mt-4 text-3xl font-bold leading-tight text-display md:text-4xl">
-                  A platform story recruiters can understand in seconds.
-                </h3>
-                <p class="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">
-                  Instead of presenting Cyber Shield Checker as only a build, the showcase frames it
-                  like a real SOC product: dashboards, architecture, detection logic, and incident
-                  workflow connected in one operating system.
-                </p>
-
-                <div class="mt-7 grid gap-3 sm:grid-cols-2">
-                  <div
-                    v-for="shot in productShowcaseShots"
-                    :key="shot.title"
-                    class="showcase-shot group"
-                  >
-                    <div class="showcase-shot-media">
-                      <img
-                        :src="shot.image"
-                        :alt="shot.label"
-                        class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
-                        loading="lazy"
-                      />
-                      <div
-                        class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent"
-                      ></div>
-                      <component
-                        :is="shot.icon"
-                        class="absolute right-3 top-3 h-4 w-4 text-brand"
-                      />
-                    </div>
-                    <div class="p-4">
-                      <p class="text-xs font-semibold uppercase tracking-[0.12em] text-brand">
-                        {{ shot.title }}
-                      </p>
-                      <p class="mt-2 text-sm font-semibold text-display">{{ shot.label }}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="architecture-map">
-                <div class="mb-6 flex items-center justify-between gap-4">
-                  <div>
-                    <p class="section-kicker text-xs">Interactive architecture</p>
-                    <h4 class="mt-2 text-xl font-bold text-display">Telemetry to investigation</h4>
-                  </div>
-                  <span class="badge">
-                    <span class="status-dot h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-                    Live SOC flow
-                  </span>
-                </div>
-
-                <div class="architecture-flow">
-                  <div
-                    v-for="(step, index) in flagshipWorkflow"
-                    :key="step.label"
-                    class="architecture-node group"
-                    :style="{ '--node-delay': `${index * 140}ms` }"
-                  >
-                    <div class="architecture-node-icon">
-                      <component :is="step.icon" class="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p class="text-sm font-bold text-display">{{ step.label }}</p>
-                      <p class="mt-1 text-xs leading-5 text-muted">{{ step.description }}</p>
-                    </div>
-                    <ArrowUpRight
-                      v-if="index < flagshipWorkflow.length - 1"
-                      class="architecture-arrow h-4 w-4 text-brand"
-                    />
-                  </div>
-                </div>
-
-                <div class="mt-6 grid gap-3 sm:grid-cols-3">
-                  <div class="architecture-metric">
-                    <p class="mono text-2xl font-bold text-display">
-                      <AnimatedCounter value="5" />
-                    </p>
-                    <p class="mt-1 text-xs text-muted">Workflow layers</p>
-                  </div>
-                  <div class="architecture-metric">
-                    <p class="mono text-2xl font-bold text-display">
-                      <AnimatedCounter value="3" />
-                    </p>
-                    <p class="mt-1 text-xs text-muted">Telemetry sources</p>
-                  </div>
-                  <div class="architecture-metric">
-                    <p class="mono text-2xl font-bold text-display">
-                      <AnimatedCounter value="24" />
-                    </p>
-                    <p class="mt-1 text-xs text-muted">Analyst actions</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </RevealOnScroll>
-
-        <section class="mt-16" aria-labelledby="lab-snapshots-title">
-          <RevealOnScroll>
-            <p class="section-kicker">Lab Snapshots</p>
-            <div class="mt-4 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-              <h3 id="lab-snapshots-title" class="section-title">
-                Security lab evidence, visualized.
-              </h3>
-              <p class="section-copy">
-                A horizontal gallery of hands-on systems behind Cyber Shield Labs.
-              </p>
-            </div>
-          </RevealOnScroll>
-
-          <div class="lab-gallery mt-9" aria-label="Cybersecurity lab snapshots">
-            <RevealOnScroll
-              v-for="(snapshot, index) in labSnapshots"
-              :key="snapshot.title"
-              :delay="index * 50"
-              class="lab-snapshot group"
-            >
-              <div class="relative overflow-hidden rounded-[12px] border border-border">
-                <img
-                  :src="snapshot.image"
-                  :alt="snapshot.title"
-                  class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-[1.05]"
-                  loading="lazy"
-                />
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"
-                ></div>
-                <span class="absolute left-3 top-3 tag bg-background/85 backdrop-blur">
-                  {{ snapshot.meta }}
-                </span>
-              </div>
-              <h4 class="mt-4 text-base font-semibold text-display">{{ snapshot.title }}</h4>
-              <p class="mt-2 text-sm leading-6 text-muted">{{ snapshot.summary }}</p>
-            </RevealOnScroll>
-          </div>
-        </section>
-
-        <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="mt-12 grid gap-5 lg:grid-cols-2">
           <RevealOnScroll
-            v-for="(project, index) in supportingProjects"
-            :key="project.id"
-            :delay="index * 70"
-            class="card group flex h-full flex-col overflow-hidden"
+            v-for="(project, index) in projectItems"
+            :key="project.title"
+            :delay="index * 80"
+            class="project-card card group flex h-full flex-col p-6 md:p-7"
           >
-            <div class="relative overflow-hidden">
-              <img
-                :src="project.image"
-                :alt="`${project.title} preview`"
-                class="aspect-video w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-                loading="lazy"
-              />
-              <span
-                v-if="isCyberProject(project)"
-                class="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-[6px] bg-background/85 px-2.5 py-1 text-xs font-medium text-brand backdrop-blur"
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="section-kicker text-xs">{{ project.year }}</p>
+                <h3 class="mt-3 text-2xl font-bold leading-tight text-display">
+                  {{ project.title }}
+                </h3>
+                <p class="mt-3 text-sm leading-6 text-muted">
+                  {{ project.summary }}
+                </p>
+              </div>
+              <div
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[8px] bg-brand-soft text-brand transition-transform duration-300 group-hover:scale-105"
               >
-                <ShieldCheck class="h-3 w-3" />
-                Security
-              </span>
+                <component :is="project.icon" class="h-5 w-5" />
+              </div>
             </div>
-            <div class="flex flex-1 flex-col p-6">
-              <p class="section-kicker text-xs">{{ project.eyebrow }}</p>
-              <h3
-                class="mt-2 text-xl font-semibold text-display transition-colors group-hover:text-brand"
+
+            <ul class="mt-6 grid gap-3">
+              <li
+                v-for="highlight in project.highlights"
+                :key="highlight"
+                class="flex items-center gap-3 rounded-[6px] border border-border bg-surface-raised/60 px-3 py-2.5 text-sm font-medium text-display"
               >
-                {{ project.title }}
-              </h3>
-              <p class="mt-3 text-sm leading-7 text-muted">{{ project.summary }}</p>
+                <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-brand"></span>
+                <span>{{ highlight }}</span>
+              </li>
+            </ul>
 
-              <div class="mt-4 flex flex-wrap gap-2">
-                <span v-for="tech in project.stack.slice(0, 4)" :key="tech" class="tag">
-                  {{ tech }}
-                </span>
-              </div>
-
-              <div class="mt-4 space-y-2">
-                <div
-                  v-for="feature in project.features.slice(0, 2)"
-                  :key="feature"
-                  class="flex gap-2 text-xs leading-5 text-muted"
-                >
-                  <CheckCircle2 class="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
-                  <span>{{ feature }}</span>
-                </div>
-              </div>
-
-              <div class="mt-5 flex items-center gap-4 border-t border-border pt-4">
-                <RouterLink
-                  :to="`/projects/${project.id}`"
-                  class="inline-flex items-center gap-2 text-sm font-semibold text-brand transition-all duration-300 hover:gap-3"
-                >
-                  Case study
-                  <ArrowUpRight class="h-4 w-4" />
-                </RouterLink>
-                <a
-                  v-if="project.githubUrl"
-                  :href="project.githubUrl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="ml-auto text-muted transition hover:text-brand"
-                  :aria-label="`${project.title} on GitHub`"
-                >
-                  <Github class="h-4 w-4" />
-                </a>
-              </div>
+            <div class="mt-6 flex flex-wrap gap-2 border-t border-border pt-5">
+              <span v-for="tech in project.stack" :key="tech" class="tag">
+                {{ tech }}
+              </span>
             </div>
           </RevealOnScroll>
         </div>
@@ -1235,46 +509,88 @@ onBeforeUnmount(() => {
     </section>
 
     <section
-      id="education"
-      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
+      id="skills"
+      class="section-panel scroll-mt-24 border-b border-border py-14 md:py-20"
     >
-      <div class="container-page relative z-1">
+      <div class="container-page">
         <RevealOnScroll>
-          <p class="section-kicker"><span class="section-index">03</span>Education</p>
-          <h2 class="section-title mt-4">Education &amp; continuous learning</h2>
+          <p class="section-kicker"><span class="section-index">03</span>Skills</p>
+          <div class="mt-4 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <h2 class="section-title">Professional Skill Set</h2>
+            <p class="section-copy">A focused mix of SOC operations, networking, systems, and secure application development.</p>
+          </div>
         </RevealOnScroll>
 
-        <div class="mt-12 max-w-4xl">
-          <div class="relative">
-            <div class="absolute bottom-0 left-4 top-0 w-px bg-border"></div>
-            <RevealOnScroll
-              v-for="(item, index) in educationTimeline"
-              :key="item.year"
-              :delay="index * 80"
-              :as="'article'"
-              class="relative mb-8 pl-12 last:mb-0"
-            >
+        <div class="mt-12 grid gap-5 lg:grid-cols-[0.82fr_1.18fr]">
+          <RevealOnScroll class="card p-6 md:p-7">
+            <p class="section-kicker text-xs">Core Strengths</p>
+            <h3 class="mt-3 text-2xl font-bold text-display">Where I add value</h3>
+
+            <div class="mt-7 grid gap-4">
               <div
-                class="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-[10px] border border-border bg-surface text-brand"
+                v-for="(strength, index) in coreStrengths"
+                :key="strength.title"
+                class="skill-strength"
+                :style="{ '--strength-delay': `${index * 110}ms` }"
               >
-                <span class="timeline-node h-2 w-2 rounded-full bg-brand"></span>
+                <div class="skill-strength-icon">
+                  <component :is="strength.icon" class="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-display">{{ strength.title }}</h4>
+                  <p class="mt-1 text-sm leading-6 text-muted">{{ strength.detail }}</p>
+                </div>
               </div>
-              <p class="section-kicker text-xs">{{ item.year }}</p>
-              <h3 class="mt-2 text-lg font-semibold text-display">{{ item.title }}</h3>
+            </div>
+          </RevealOnScroll>
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <RevealOnScroll
+              v-for="(group, index) in skillMatrix"
+              :key="group.title"
+              :delay="index * 70"
+              class="skill-matrix-card"
+            >
+              <div class="flex items-center gap-3">
+                <div class="skill-matrix-icon">
+                  <component :is="group.icon" class="h-5 w-5" />
+                </div>
+                <h3 class="text-base font-bold text-display">{{ group.title }}</h3>
+              </div>
+
+              <div class="mt-5 grid gap-2">
+                <div v-for="skill in group.skills" :key="skill" class="skill-row">
+                  <span>{{ skill }}</span>
+                  <span class="skill-row-line"></span>
+                </div>
+              </div>
             </RevealOnScroll>
           </div>
         </div>
+
+        <RevealOnScroll class="mt-6" :delay="220">
+          <div class="surface-panel flex flex-col gap-3 p-5 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p class="text-sm font-bold text-display">Professional habits</p>
+              <p class="mt-1 text-sm text-muted">Analytical thinking, documentation, teamwork, and clear communication.</p>
+            </div>
+            <span class="tag w-fit">Ready for internship collaboration</span>
+          </div>
+        </RevealOnScroll>
       </div>
     </section>
 
     <section
       id="achievements"
-      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
+      class="scroll-mt-24 border-b border-border py-16 md:py-24"
     >
-      <div class="container-page relative z-1">
+      <div class="container-page">
         <RevealOnScroll>
-          <p class="section-kicker"><span class="section-index">04</span>Highlights</p>
-          <h2 class="section-title mt-4">Highlights</h2>
+          <p class="section-kicker"><span class="section-index">04</span>Achievements</p>
+          <div class="mt-4 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+            <h2 class="section-title">Achievements</h2>
+            <p class="section-copy">Highlights from learning, labs, certifications, and practical cybersecurity work.</p>
+          </div>
         </RevealOnScroll>
 
         <div class="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
@@ -1285,7 +601,7 @@ onBeforeUnmount(() => {
             class="card p-6"
           >
             <div
-              class="flex h-10 w-10 items-center justify-center rounded-[10px] bg-brand-soft text-brand"
+              class="flex h-10 w-10 items-center justify-center rounded-[8px] bg-brand-soft text-brand"
             >
               <component :is="achievement.icon" class="h-5 w-5" />
             </div>
@@ -1293,87 +609,54 @@ onBeforeUnmount(() => {
             <p class="mt-2 text-sm leading-6 text-muted">{{ achievement.description }}</p>
           </RevealOnScroll>
         </div>
-      </div>
-    </section>
 
-    <section
-      id="certificates"
-      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
-    >
-      <div class="container-page relative z-1">
-        <RevealOnScroll>
-          <p class="section-kicker"><span class="section-index">05</span>Credentials</p>
-          <h2 class="section-title mt-4">Certifications &amp; training</h2>
+        <RevealOnScroll class="mt-14" :delay="120">
+          <div class="flex flex-col justify-between gap-4 border-t border-border pt-10 lg:flex-row lg:items-end">
+            <div>
+              <p class="section-kicker text-xs">Certificates</p>
+              <h3 class="mt-3 text-2xl font-bold text-display">Certifications</h3>
+            </div>
+            <p class="section-copy">
+              Cybersecurity, SOC, Linux, networking, and programming training completed through
+              focused online study.
+            </p>
+          </div>
         </RevealOnScroll>
 
-        <div class="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div class="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           <RevealOnScroll
             v-for="(certificate, index) in portfolioData.certifications"
             :key="certificate.id"
             :delay="index * 50"
-            class="card group p-6"
+            class="surface-panel p-5"
           >
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="section-kicker text-xs">
-                  {{ getCertificationDetails(certificate.id).category }}
-                </p>
-                <h3 class="mt-3 text-lg font-semibold text-display">{{ certificate.title }}</h3>
-              </div>
+            <div class="flex items-start gap-4">
               <div
-                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-brand-soft text-brand transition-transform duration-300 group-hover:scale-105"
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-brand-soft text-brand"
               >
                 <Award class="h-5 w-5" />
               </div>
-            </div>
-            <div class="mt-4 flex flex-wrap items-center gap-2">
-              <span class="tag">{{ certificate.provider }}</span>
-              <span class="tag">{{ certificate.year }}</span>
-            </div>
-            <p class="mt-4 text-sm leading-6 text-muted">{{ certificate.focus }}</p>
-            <div class="mt-5">
-              <p class="text-xs font-medium uppercase tracking-[0.1em] text-muted">
-                Skills learned
-              </p>
-              <div class="mt-3 flex flex-wrap gap-2">
-                <span
-                  v-for="skill in getCertificationDetails(certificate.id).skills"
-                  :key="skill"
-                  class="rounded-[8px] border border-border bg-surface-raised px-2.5 py-1 text-xs font-medium text-body"
-                >
-                  {{ skill }}
-                </span>
+              <div>
+                <p class="text-xs font-semibold uppercase text-muted">
+                  {{ certificate.provider }} · {{ certificate.year }}
+                </p>
+                <h4 class="mt-2 text-base font-bold leading-snug text-display">
+                  {{ certificate.title }}
+                </h4>
+                <p class="mt-2 text-sm leading-6 text-muted">{{ certificate.focus }}</p>
               </div>
-            </div>
-            <div class="mt-5 flex items-center justify-between gap-3 border-t border-border pt-4">
-              <span class="text-xs font-medium uppercase tracking-[0.1em] text-muted">
-                Credential
-              </span>
-              <a
-                v-if="certificate.verifyUrl"
-                :href="certificate.verifyUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-xs font-medium text-brand transition hover:underline"
-              >
-                Verify
-              </a>
-              <span v-else class="text-xs font-medium text-muted"> Proof available </span>
             </div>
           </RevealOnScroll>
         </div>
       </div>
     </section>
 
-    <section
-      id="contact"
-      class="relative scroll-mt-24 overflow-hidden border-t border-border py-16 md:py-24"
-    >
-      <div class="container-page relative z-1">
-        <RevealOnScroll class="card p-6 md:p-10">
+    <section id="contact" class="scroll-mt-24 py-16 md:py-24">
+      <div class="container-page">
+        <RevealOnScroll class="surface-panel p-6 md:p-10">
           <div class="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
             <div>
-              <p class="section-kicker"><span class="section-index">06</span>Secure Channel</p>
+              <p class="section-kicker"><span class="section-index">05</span>Contact</p>
               <h2 class="mt-4 text-3xl font-bold leading-tight text-display md:text-4xl">
                 Open a secure channel
               </h2>
@@ -1396,7 +679,7 @@ onBeforeUnmount(() => {
                 class="card p-4"
               >
                 <component :is="link.icon" class="h-5 w-5 text-brand" />
-                <p class="mt-4 text-xs font-medium uppercase tracking-[0.1em] text-muted">
+                <p class="mt-4 text-xs font-medium uppercase text-muted">
                   {{ link.label }}
                 </p>
                 <p class="mt-1.5 wrap-break-word text-sm font-semibold text-display">

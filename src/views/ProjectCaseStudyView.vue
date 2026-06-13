@@ -133,14 +133,12 @@ onBeforeUnmount(() => {
                   </div>
                 </div>
 
-                <div class="spotlight-ring">
-                  <div class="card overflow-hidden">
-                    <img
-                      :src="project.image"
-                      :alt="`${project.title} case study preview`"
-                      class="aspect-16/11 w-full object-cover"
-                    />
-                  </div>
+                <div class="card overflow-hidden">
+                  <img
+                    :src="project.image"
+                    :alt="`${project.title} case study preview`"
+                    class="aspect-16/11 w-full object-cover"
+                  />
                 </div>
               </RevealOnScroll>
 

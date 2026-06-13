@@ -6,12 +6,11 @@ import { portfolioData } from "@/data/portfolio";
 
 const navItems = [
   { label: "Home", href: "/#home", id: "home" },
-  { label: "Security Arsenal", href: "/#skills", id: "skills" },
-  { label: "Case Files", href: "/#projects", id: "projects" },
-  { label: "Education", href: "/#education", id: "education" },
-  { label: "Highlights", href: "/#achievements", id: "achievements" },
-  { label: "Credentials", href: "/#certificates", id: "certificates" },
-  { label: "Secure Channel", href: "/#contact", id: "contact" },
+  { label: "About Me", href: "/#about", id: "about" },
+  { label: "Projects", href: "/#projects", id: "projects" },
+  { label: "Skills", href: "/#skills", id: "skills" },
+  { label: "Achievements", href: "/#achievements", id: "achievements" },
+  { label: "Contact", href: "/#contact", id: "contact" },
 ];
 
 const isScrolled = ref(false);
@@ -96,39 +95,39 @@ onBeforeUnmount(() => {
 
 <template>
   <header
-    class="header-bar pointer-events-none fixed left-0 right-0 top-3 z-50 px-3 transition-all duration-300"
+    class="header-bar pointer-events-none fixed left-0 right-0 top-0 z-50 border-b border-border/80 bg-background/88 px-0 backdrop-blur-xl transition-all duration-300"
     :class="{ 'is-scrolled': isScrolled || isMenuOpen }"
   >
     <div
-      class="container-page pointer-events-auto flex items-center justify-between gap-4 rounded-[18px] border border-border/80 bg-background/78 px-4 shadow-[0_18px_50px_rgba(0,0,0,0.18)] backdrop-blur-2xl transition-all duration-300"
-      :class="isScrolled || isMenuOpen ? 'py-2.5' : 'py-3'"
+      class="container-page pointer-events-auto flex items-center justify-between gap-4 transition-all duration-300"
+      :class="isScrolled || isMenuOpen ? 'py-2.5' : 'py-3.5'"
     >
       <RouterLink
-        to="/"
-        class="group flex min-w-0 items-center gap-3 text-display"
+        to="/#home"
+        class="group flex min-w-0 items-center gap-2.5 text-display"
         aria-label="Peng Seyha home"
         @click="closeMenu"
       >
         <span
-          class="logo-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-gradient-to-br from-blue-500 to-cyan-400 text-xs font-bold text-white shadow-sm transition-transform duration-300 group-hover:scale-105"
+          class="logo-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-brand text-xs font-bold text-[var(--button-primary-text)] shadow-sm transition-transform duration-300 group-hover:scale-105"
         >
           CS
         </span>
         <span class="flex min-w-0 flex-col leading-tight">
           <span
-            class="truncate text-sm font-bold tracking-[-0.01em] transition-colors group-hover:text-brand md:text-base"
+            class="truncate text-sm font-bold transition-colors group-hover:text-brand md:text-base"
           >
             Cyber Shield Labs
           </span>
           <span
-            class="mono hidden text-xs font-medium uppercase tracking-[0.14em] text-muted sm:block"
+            class="mono hidden text-xs font-medium uppercase text-muted sm:block"
           >
             by Peng Seyha
           </span>
         </span>
       </RouterLink>
 
-      <nav class="hidden items-center gap-1 xl:flex">
+      <nav class="hidden items-center gap-0.5 lg:flex">
         <a
           v-for="item in navItems"
           :key="item.label"
@@ -140,10 +139,10 @@ onBeforeUnmount(() => {
         </a>
       </nav>
 
-      <div class="hidden items-center gap-3 xl:flex">
+      <div class="hidden items-center gap-3 lg:flex">
         <button
           type="button"
-          class="button-secondary h-10 w-10 px-0"
+          class="button-secondary h-9 w-9 px-0"
           :aria-label="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
           :title="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
           @click="toggleTheme"
@@ -156,17 +155,17 @@ onBeforeUnmount(() => {
 
         <a
           :href="portfolioData.contact.resumeUrl"
-          class="button-primary whitespace-nowrap px-4 py-2 text-xs"
+          class="button-primary whitespace-nowrap px-3.5 py-2 text-xs"
         >
           <Download class="h-4 w-4" />
           Download CV
         </a>
       </div>
 
-      <div class="flex items-center gap-2 xl:hidden">
+      <div class="flex items-center gap-2 lg:hidden">
         <button
           type="button"
-          class="button-secondary h-10 w-10 px-0"
+          class="button-secondary h-9 w-9 px-0"
           :aria-label="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
           :title="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
           @click="toggleTheme"
@@ -177,7 +176,7 @@ onBeforeUnmount(() => {
 
         <button
           type="button"
-          class="button-secondary h-10 w-10 px-0"
+          class="button-secondary h-9 w-9 px-0"
           :aria-expanded="isMenuOpen"
           aria-controls="mobile-navigation"
           aria-label="Toggle navigation"
@@ -195,7 +194,7 @@ onBeforeUnmount(() => {
       <nav
         v-show="isMenuOpen"
         id="mobile-navigation"
-        class="pointer-events-auto mt-2 rounded-[18px] border border-border bg-surface-raised/98 shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-xl xl:hidden"
+        class="pointer-events-auto border-t border-border bg-background/98 shadow-lg backdrop-blur-xl lg:hidden"
       >
         <div class="container-page grid gap-1 px-4 py-3">
           <a
