@@ -6,16 +6,21 @@ import { useRoute } from "vue-router";
 import Navbar from "@/components/layout/Navbar.vue";
 import RevealOnScroll from "@/components/layout/RevealOnScroll.vue";
 import AnimatedCounter from "@/components/ui/AnimatedCounter.vue";
-import { getProjectById } from "@/data/portfolio";
+import { getProjectById, portfolioData } from "@/data/portfolio";
 
 const route = useRoute();
 const project = computed(() => getProjectById(String(route.params.id)));
+
+const relatedProjects = computed(() =>
+  portfolioData.projects.filter((item) => item.id !== project.value?.id).slice(0, 3),
+);
 
 const tocSections = [
   { id: "overview", label: "Overview" },
   { id: "challenge-solution", label: "Challenge & Solution" },
   { id: "architecture", label: "Tech & Architecture" },
   { id: "details", label: "Features & Lessons" },
+  { id: "related", label: "Related Projects" },
 ];
 
 const activeSection = ref(tocSections[0].id);
@@ -182,6 +187,19 @@ onBeforeUnmount(() => {
                   </span>
                 </div>
 
+                <template v-if="project.skillsProved">
+                  <p class="section-kicker mt-8">Skills Proved</p>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    <span
+                      v-for="skill in project.skillsProved"
+                      :key="skill"
+                      class="inline-flex items-center rounded-full border border-brand/25 bg-brand-soft px-2.5 py-1 text-xs font-medium text-brand"
+                    >
+                      {{ skill }}
+                    </span>
+                  </div>
+                </template>
+
                 <p class="section-kicker mt-8">Role</p>
                 <p class="mt-3 leading-7 text-muted">{{ project.role }}</p>
               </RevealOnScroll>
@@ -245,6 +263,48 @@ onBeforeUnmount(() => {
                   </li>
                 </ul>
               </RevealOnScroll>
+            </section>
+
+            <section id="related" class="scroll-mt-28">
+              <p class="section-kicker">Related Projects</p>
+              <h2 class="mt-3 text-2xl font-bold text-display">Explore more case files</h2>
+
+              <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <RevealOnScroll
+                  v-for="(related, index) in relatedProjects"
+                  :key="related.id"
+                  :delay="index * 70"
+                >
+                  <RouterLink
+                    :to="`/projects/${related.id}`"
+                    class="card group flex h-full flex-col overflow-hidden"
+                  >
+                    <div class="relative aspect-16/10 overflow-hidden border-b border-border">
+                      <img
+                        :src="related.image"
+                        :alt="`${related.title} preview`"
+                        loading="lazy"
+                        class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
+                      />
+                    </div>
+                    <div class="flex flex-1 flex-col p-5">
+                      <p class="mono text-xs text-brand">{{ related.eyebrow }}</p>
+                      <h3 class="mt-1.5 text-base font-bold leading-tight text-display">
+                        {{ related.title }}
+                      </h3>
+                      <p class="mt-2 line-clamp-2 text-sm leading-6 text-muted">
+                        {{ related.summary }}
+                      </p>
+                      <span
+                        class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand"
+                      >
+                        Explore
+                        <ArrowUpRight class="h-4 w-4" />
+                      </span>
+                    </div>
+                  </RouterLink>
+                </RevealOnScroll>
+              </div>
             </section>
           </div>
         </div>

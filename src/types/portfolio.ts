@@ -27,6 +27,7 @@ export interface Project {
   architecture: string[];
   lessons: string[];
   nextSteps: string[];
+  skillsProved?: string[];
   githubUrl?: string;
   reportUrl?: string;
   liveDemoUrl?: string;

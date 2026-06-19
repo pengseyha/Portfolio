@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { Download, Menu, Moon, Sun, X } from "lucide-vue-next";
+import { Menu, Moon, Sun, X } from "lucide-vue-next";
 import { onBeforeUnmount, onMounted, ref } from "vue";
-
-import { portfolioData } from "@/data/portfolio";
 
 const navItems = [
   { label: "Home", href: "/#home", id: "home" },
-  { label: "About Me", href: "/#about", id: "about" },
+  { label: "About", href: "/#about", id: "about" },
   { label: "Projects", href: "/#projects", id: "projects" },
   { label: "Skills", href: "/#skills", id: "skills" },
-  { label: "Achievements", href: "/#achievements", id: "achievements" },
+  { label: "Training", href: "/#certifications", id: "certifications" },
   { label: "Contact", href: "/#contact", id: "contact" },
 ];
 
@@ -111,18 +109,16 @@ onBeforeUnmount(() => {
         <span
           class="logo-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-brand text-xs font-bold text-[var(--button-primary-text)] shadow-sm transition-transform duration-300 group-hover:scale-105"
         >
-          CS
+          PS
         </span>
         <span class="flex min-w-0 flex-col leading-tight">
           <span
             class="truncate text-sm font-bold transition-colors group-hover:text-brand md:text-base"
           >
-            Cyber Shield Labs
+            Peng Seyha
           </span>
-          <span
-            class="mono hidden text-xs font-medium uppercase text-muted sm:block"
-          >
-            by Peng Seyha
+          <span class="mono hidden text-xs font-medium uppercase text-muted sm:block">
+            Cybersecurity · SOC Analyst
           </span>
         </span>
       </RouterLink>
@@ -150,16 +146,6 @@ onBeforeUnmount(() => {
           <Sun v-if="theme === 'dark'" class="h-4 w-4 transition-transform hover:rotate-45" />
           <Moon v-else class="h-4 w-4 transition-transform hover:-rotate-12" />
         </button>
-
-        <span class="h-6 w-px bg-border" aria-hidden="true"></span>
-
-        <a
-          :href="portfolioData.contact.resumeUrl"
-          class="button-primary whitespace-nowrap px-3.5 py-2 text-xs"
-        >
-          <Download class="h-4 w-4" />
-          Download CV
-        </a>
       </div>
 
       <div class="flex items-center gap-2 lg:hidden">
@@ -206,14 +192,6 @@ onBeforeUnmount(() => {
             @click="closeMenu"
           >
             {{ item.label }}
-          </a>
-          <a
-            :href="portfolioData.contact.resumeUrl"
-            class="button-primary mt-2 w-full text-sm"
-            @click="closeMenu"
-          >
-            <Download class="h-4 w-4" />
-            Download CV
           </a>
         </div>
       </nav>

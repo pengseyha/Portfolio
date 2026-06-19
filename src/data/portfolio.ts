@@ -19,15 +19,97 @@ import type {
 export const portfolioData = {
   identity: {
     name: "Peng Seyha",
-    role: "Computer Science Student | SOC Analyst Aspirant",
-    headline: "I turn security events into actionable intelligence.",
-    subheading:
-      "I build practical systems for monitoring, detection, investigation, and response across a hands-on SOC lab.",
+    role: "Cybersecurity Student | SOC Analyst Aspirant",
+    // Profile photo: drop your image in /public (e.g. public/profile.jpg)
+    // then set this to "/profile.jpg". Empty = show initials.
+    photo: "",
+    label: "SOC Analyst Portfolio",
+    tagline: "I analyze logs, investigate alerts, and build security tools for real SOC workflows.",
+    description:
+      "I build practical SOC labs and detection workflows that turn raw security events into clear investigation steps, mapped evidence, and response actions.",
     location: "Phnom Penh, Cambodia",
-    availability: "Open to Cybersecurity, SOC Analyst, and IT Security internships",
+    availability: "Open to Internship",
+    availabilityLong: "Open to Cybersecurity, SOC Analyst, and IT Security internships",
     summary:
-      "My work connects SOC fundamentals with clean engineering: log collection, detection logic, analyst workflows, APIs, and documentation that another security teammate can review.",
+      "I am a Computer Science Engineering student who is focused on cybersecurity and SOC operations. I started by learning networking, Linux, and development, then became more interested in how security teams monitor logs, investigate alerts, and respond to incidents. Now I build hands-on SOC labs using tools like Splunk, Snort, pfSense, Wireshark, Nmap, Kali Linux, and Linux systems to practice real security workflows.",
   },
+  heroStats: [
+    { value: "4th", label: "Year Student" },
+    { value: "5+", label: "Security Trainings" },
+    { value: "3+", label: "SOC Projects" },
+    { value: "10+", label: "Tools Practiced" },
+  ],
+  signalStrip: [
+    { label: "Logs collected" },
+    { label: "Alerts triaged" },
+    { label: "Evidence mapped" },
+    { label: "Response documented" },
+  ],
+  focusCards: [
+    {
+      title: "SOC Monitoring",
+      detail: "Watching logs and dashboards to spot suspicious activity early.",
+      icon: "shield",
+    },
+    {
+      title: "Log Analysis",
+      detail: "Searching and correlating events to reconstruct what happened.",
+      icon: "search",
+    },
+    {
+      title: "Incident Response",
+      detail: "Investigating alerts, mapping evidence, and documenting response.",
+      icon: "siren",
+    },
+  ],
+  skillGroups: [
+    {
+      title: "Cybersecurity",
+      description: "SOC operations, detection, and investigation workflows.",
+      icon: "shield",
+      skills: [
+        "SOC Monitoring",
+        "Log Analysis",
+        "Alert Triage",
+        "Incident Response",
+        "MITRE ATT&CK",
+        "Splunk",
+        "Snort",
+        "Wireshark",
+        "Nmap",
+        "Kali Linux",
+      ],
+    },
+    {
+      title: "Development",
+      description: "Building security tools, dashboards, and APIs.",
+      icon: "code",
+      skills: [
+        "Vue",
+        "TypeScript",
+        "JavaScript",
+        "NestJS",
+        "Laravel",
+        "PostgreSQL",
+        "MySQL",
+        "Docker",
+      ],
+    },
+    {
+      title: "Networking",
+      description: "Network fundamentals and defensive configuration.",
+      icon: "network",
+      skills: [
+        "TCP/IP",
+        "Subnetting",
+        "VLANs",
+        "Routing",
+        "pfSense",
+        "Firewall Rules",
+        "Linux Administration",
+      ],
+    },
+  ],
   contact: {
     email: "pengseyha2005@gmail.com",
     github: "github.com/pengseyha",
@@ -102,6 +184,7 @@ export const portfolioData = {
       role: "Product thinking, backend architecture, detection workflow design, database modeling, and technical documentation",
       image: splunkSiemImage,
       stack: ["Splunk", "pfSense", "Snort", "NestJS", "PostgreSQL", "Linux"],
+      skillsProved: ["Log Analysis", "Alert Triage", "Incident Response", "API Design"],
       metrics: [
         { label: "Pipeline", value: "Logs to incidents" },
         { label: "Coverage", value: "Auth, firewall, IDS" },
@@ -137,11 +220,10 @@ export const portfolioData = {
         "Publish full dashboard screenshots and detection examples",
         "Create sample incident reports from lab investigations",
       ],
-      githubUrl: "https://github.com/pengseyha",
     },
     {
       id: "soc-analyst-lab",
-      title: "SOC Analyst Lab",
+      title: "SOC Lab",
       eyebrow: "Detection Lab",
       year: "2026",
       type: "Lab",
@@ -150,6 +232,7 @@ export const portfolioData = {
       role: "Lab design, query writing, investigation workflow, and report notes",
       image: splunkSiemImage,
       stack: ["Splunk", "Linux", "MITRE ATT&CK"],
+      skillsProved: ["Threat Hunting", "Log Analysis", "MITRE Mapping"],
       metrics: [
         { label: "Workflows", value: "3" },
         { label: "Focus", value: "Triage" },
@@ -178,7 +261,44 @@ export const portfolioData = {
         "Add sample datasets and screenshots",
         "Create a public investigation report template",
       ],
-      githubUrl: "https://github.com/pengseyha",
+    },
+    {
+      id: "security-event-dashboard",
+      title: "Security Event Monitoring Dashboard",
+      eyebrow: "SOC Dashboard",
+      year: "2025",
+      type: "Featured",
+      tags: ["Dashboard", "Monitoring", "SIEM"],
+      summary:
+        "A monitoring dashboard that visualizes security events, alert severity, and source activity for fast analyst triage.",
+      role: "Dashboard design, data modeling, and frontend implementation",
+      image: mitreAttackImage,
+      stack: ["Vue", "TypeScript", "PostgreSQL", "Splunk"],
+      skillsProved: ["Security Monitoring", "Data Visualization", "Alert Triage"],
+      metrics: [
+        { label: "Views", value: "Severity, source" },
+        { label: "Focus", value: "Triage speed" },
+        { label: "Status", value: "Active Build" },
+      ],
+      features: [
+        "Real-time style view of incoming security events",
+        "Severity, source, and status breakdowns for triage",
+        "Drill-down from alert to supporting evidence",
+      ],
+      challenge:
+        "Analysts lose time when event data is scattered across tools without a single triage view.",
+      solution:
+        "I designed a focused dashboard that surfaces severity, source, and status so the next action is always obvious.",
+      architecture: [
+        "Security events are normalized into a queryable store",
+        "The dashboard groups events by severity, source, and status",
+        "Each alert links to evidence and a suggested next step",
+      ],
+      lessons: [
+        "A good dashboard answers a question, it does not just show data.",
+        "Triage speed improves when severity and ownership are visible at a glance.",
+      ],
+      nextSteps: ["Add live data feeds and saved filters", "Publish real dashboard screenshots"],
     },
     {
       id: "network-infrastructure",
@@ -478,13 +598,6 @@ export const portfolioData = {
   ] as Experience[],
   certifications: [
     {
-      id: "google-cyber-cert",
-      title: "Google Cybersecurity Professional Certificate",
-      provider: "Google / Coursera",
-      year: "2025",
-      focus: "Security foundations and incident response",
-    },
-    {
       id: "soc-analyst",
       title: "SOC Analyst",
       provider: "ThinkCyber India",
@@ -514,7 +627,7 @@ export const portfolioData = {
     },
     {
       id: "intro-cyber",
-      title: "Intro to Cyber",
+      title: "Introduction to Cybersecurity",
       provider: "ThinkCyber India",
       year: "2025",
       focus: "Cybersecurity fundamentals",
